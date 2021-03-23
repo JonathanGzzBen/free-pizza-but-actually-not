@@ -5,6 +5,9 @@ import {
   Form,
   FormControl,
   Button,
+  Container,
+  Row,
+  Col,
 } from "react-bootstrap";
 
 export default function Layout({ children }) {
@@ -35,7 +38,13 @@ export default function Layout({ children }) {
           </Form>
         </Navbar.Collapse>
       </Navbar>
-      <div>{children}</div>
+      <Container fluid>
+        <Row className="justify-content-center pt-4">
+          <Col className="justify-content-center" sm={8}>
+            {children}
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 }
