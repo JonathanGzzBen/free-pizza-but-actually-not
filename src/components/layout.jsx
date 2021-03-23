@@ -9,18 +9,27 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import Link from "next/link";
 
 export default function Layout({ children }) {
   return (
     <div>
       <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+        <Link href="/" passHref>
+          <Navbar.Brand>
+            Free Pizza<sub>but actually not</sub>
+          </Navbar.Brand>
+        </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+            <Link href="/" passHref>
+              <Nav.Link>Home</Nav.Link>
+            </Link>
+            <Link href="/order" passHref>
+              <Nav.Link>Order</Nav.Link>
+            </Link>
+            {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Another action
@@ -30,7 +39,7 @@ export default function Layout({ children }) {
               <NavDropdown.Item href="#action/3.4">
                 Separated link
               </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
           </Nav>
           <Form inline>
             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
