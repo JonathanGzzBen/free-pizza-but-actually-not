@@ -29,6 +29,9 @@ export default function Layout({ children }) {
             <Link href="/order" passHref>
               <Nav.Link>Order</Nav.Link>
             </Link>
+            <Link href="/signin" passHref>
+              <Nav.Link>Iniciar Sesion</Nav.Link>
+            </Link>
             {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
