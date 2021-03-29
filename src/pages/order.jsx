@@ -1,7 +1,12 @@
 import { Row, Col, Form, Button } from "react-bootstrap";
 import Layout from "../components/layout";
+import { useRouter } from "next/router";
 
 export default function Order() {
+  const router = useRouter();
+  const openPayOrderPage = () => {
+    router.push("pay-order");
+  };
   return (
     <Layout>
       <Form>
@@ -157,7 +162,9 @@ export default function Order() {
         <Row className="justify-content-end">
           <Form.Group as={Row}>
             <Col style={{ padding: "0" }} sm={{ span: 10 }}>
-              <Button type="submit">Generar Pedido</Button>
+              <Button type="submit" onClick={openPayOrderPage}>
+                Generar Pedido
+              </Button>
             </Col>
           </Form.Group>
         </Row>
