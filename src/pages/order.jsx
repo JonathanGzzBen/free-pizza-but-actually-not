@@ -50,7 +50,7 @@ export default function Order() {
                     <Form.Check.Input type="radio" />
                     <Form.Check.Label>
                       <div>
-                        MEDIANA (30 cm){" "}
+                        MEDIANA (30 cm) - 1 ingredientes{" "}
                         <span style={{ color: "red" }}>$89.90</span>
                       </div>
                     </Form.Check.Label>
@@ -59,7 +59,7 @@ export default function Order() {
                     <Form.Check.Input type="radio" />
                     <Form.Check.Label>
                       <div>
-                        MEDIANA (30 cm){" "}
+                        GRANDE (35 cm) - 2 ingredientes{" "}
                         <span style={{ color: "red" }}>$89.90</span>
                       </div>
                     </Form.Check.Label>
@@ -68,7 +68,7 @@ export default function Order() {
                     <Form.Check.Input type="radio" />
                     <Form.Check.Label>
                       <div>
-                        MEDIANA (30 cm){" "}
+                        JUMBO (45 cm) - 2 ingredientes{" "}
                         <span style={{ color: "red" }}>$89.90</span>
                       </div>
                     </Form.Check.Label>
@@ -82,19 +82,19 @@ export default function Order() {
                 <Col>
                   <Form.Check
                     type="checkbox"
-                    label="MEDIANA"
+                    label="PEPPERONI"
                     name="mediana"
                     id="tamano-mediana"
                   />
                   <Form.Check
                     type="checkbox"
-                    label="GRANDE"
+                    label="JAMON"
                     name="grande"
                     id="tamano-grande"
                   />
                   <Form.Check
                     type="checkbox"
-                    label="JUMBO"
+                    label="TOCINO"
                     name="jumbo"
                     id="tamano-jumbo"
                   />
@@ -102,46 +102,62 @@ export default function Order() {
               </Form.Group>
             </fieldset>
             <fieldset>
-              <Form.Group as={Row}>
-                <Form.Label as="legend">BEBIDAS</Form.Label>
-                <Col>
-                  <Form.Check type="checkbox" id="bebida-manzanita-2">
-                    <Form.Check.Input type="checkbox" />
-                    <Form.Check.Label>
-                      <div>
-                        MANZANITA (2 LITROS)
-                        <div style={{ color: "red" }}>$12.50</div>
-                      </div>
-                    </Form.Check.Label>
-                  </Form.Check>
-                  <Form.Check type="checkbox" id="bebida-manzanita-2">
-                    <Form.Check.Input type="checkbox" />
-                    <Form.Check.Label>
-                      <div>
-                        MANZANITA (2 LITROS)
-                        <div style={{ color: "red" }}>$12.50</div>
-                      </div>
-                    </Form.Check.Label>
-                  </Form.Check>
-                  <Form.Check type="checkbox" id="bebida-manzanita-2">
-                    <Form.Check.Input type="checkbox" />
-                    <Form.Check.Label>
-                      <div>
-                        MANZANITA (2 LITROS)
-                        <div style={{ color: "red" }}>$12.50</div>
-                      </div>
-                    </Form.Check.Label>
-                  </Form.Check>
-                </Col>
+              <Form.Label as="legend">BEBIDAS</Form.Label>
+              <Form.Group controlId="manzanita">
+                <Row>
+                  <Col>
+                    <Form.Control type="number" value="0" />
+                  </Col>
+                  <Col md={8}>
+                    <div>
+                      MANZANITA (2 LITROS)
+                      <div style={{ color: "red" }}>$12.50</div>
+                    </div>
+                  </Col>
+                </Row>
+              </Form.Group>
+              <Form.Group controlId="manzanita">
+                <Row>
+                  <Col>
+                    <Form.Control type="number" value="0" />
+                  </Col>
+                  <Col md={8}>
+                    <div>
+                      MANZANITA (2 LITROS)
+                      <div style={{ color: "red" }}>$12.50</div>
+                    </div>
+                  </Col>
+                </Row>
+              </Form.Group>
+              <Form.Group controlId="manzanita">
+                <Row>
+                  <Col>
+                    <Form.Control type="number" value="0" />
+                  </Col>
+                  <Col md={8}>
+                    <div>
+                      MANZANITA (2 LITROS)
+                      <div style={{ color: "red" }}>$12.50</div>
+                    </div>
+                  </Col>
+                </Row>
               </Form.Group>
             </fieldset>
           </Col>
         </Row>
+        <Row className="justify-content-end">
+          <Form.Group controlId="metodo-pago" className="m-3">
+            <Form.Label>Método de pago:</Form.Label>
+            <Form.Control as="select" defaultValue="Choose...">
+              <option>Efectivo</option>
+            </Form.Control>
+          </Form.Group>
+        </Row>
 
         <Row className="justify-content-end">
           <Form.Group as={Row}>
-            <Col sm={{ span: 10 }}>
-              <Button type="submit">Ordenar</Button>
+            <Col style={{ padding: "0" }} sm={{ span: 10 }}>
+              <Button type="submit">Generar Pedido</Button>
             </Col>
           </Form.Group>
         </Row>
