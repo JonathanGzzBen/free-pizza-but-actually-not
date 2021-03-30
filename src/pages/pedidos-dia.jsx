@@ -1,7 +1,32 @@
+import { useState } from "react";
 import { Col, Form, Row, Button, Table } from "react-bootstrap";
 import Layout from "../components/layout";
 
 export default function PedidosPorDia() {
+  const date = new Date();
+  const [fechaPedidos, setFechaPedidos] = useState(
+    date.toISOString().substring(0, 10)
+  );
+  const [folio, setFolio] = useState("");
+  const [cliente, setCliente] = useState("");
+  const [formaPago, setFormaPago] = useState("Efectivo");
+
+  const clearInputsAndSetValue = (setFunction, value) => {
+    setCliente("");
+    setFolio("");
+    setFormaPago("");
+    setFunction(value);
+  };
+
+  const searchSubmitHandler = (e) => {
+    e.preventDefault();
+    console.log({
+      fechaPedidos,
+      folio,
+      formaPago,
+      cliente,
+    });
+  };
   return (
     <Layout>
       <Form>
@@ -9,7 +34,13 @@ export default function PedidosPorDia() {
           <Col>
             <Form.Group controlId="folio">
               <Form.Label>FECHA DE PEDIDOS:</Form.Label>
-              <Form.Control type="date" />
+              <Form.Control
+                type="date"
+                value={fechaPedidos}
+                onChange={(e) =>
+                  clearInputsAndSetValue(setFechaPedidos, e.target.value)
+                }
+              />
               <Form.Text className="text-muted">*Obligatorio</Form.Text>
             </Form.Group>
           </Col>
@@ -20,16 +51,25 @@ export default function PedidosPorDia() {
           <Col>
             <Form.Group controlId="folio">
               <Form.Label>FOLIO:</Form.Label>
-              <Form.Control type="text" ReadOnly value="001" />
-              <Form.Text className="text-muted">
-                Guardelo en caso de necesitar asistencia.
-              </Form.Text>
+              <Form.Control
+                type="text"
+                value={folio}
+                onChange={(e) =>
+                  clearInputsAndSetValue(setFolio, e.target.value)
+                }
+              />
             </Form.Group>
           </Col>
           <Col>
             <Form.Group controlId="forma-pago">
               <Form.Label>FORMA DE PAGO:</Form.Label>
-              <Form.Control as="select" defaultValue="Choose...">
+              <Form.Control
+                as="select"
+                value={formaPago}
+                onChange={(e) =>
+                  clearInputsAndSetValue(setFormaPago, e.target.value)
+                }
+              >
                 <option>Efectivo</option>
               </Form.Control>
             </Form.Group>
@@ -40,7 +80,13 @@ export default function PedidosPorDia() {
           <Col>
             <Form.Group controlId="cliente">
               <Form.Label>CLIENTE:</Form.Label>
-              <Form.Control type="text" ReadOnly value="001" />
+              <Form.Control
+                type="text"
+                value={cliente}
+                onChange={(e) =>
+                  clearInputsAndSetValue(setCliente, e.target.value)
+                }
+              />
             </Form.Group>
           </Col>
           <Col></Col>
@@ -49,7 +95,9 @@ export default function PedidosPorDia() {
         <Row className="justify-content-end">
           <Form.Group as={Row}>
             <Col style={{ padding: "0" }} sm={{ span: 10 }}>
-              <Button type="submit">Buscar</Button>
+              <Button type="submit" onClick={searchSubmitHandler}>
+                Buscar
+              </Button>
             </Col>
           </Form.Group>
         </Row>
