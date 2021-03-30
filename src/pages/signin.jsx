@@ -9,16 +9,15 @@ export default class Order extends React.Component {
       usuario: "",
       contraseña: "",
     };
-    this.handleUsuarioChanged = this.handleUsuarioChanged.bind(this);
-    this.handleContraseñaChanged = this.handleContraseñaChanged.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleLoginSubmitClick = this.handleLoginSubmitClick.bind(this);
   }
 
-  handleUsuarioChanged(e) {
-    this.setState({ usuario: e.target.value });
-  }
-  handleContraseñaChanged(e) {
-    this.setState({ contraseña: e.target.value });
+  handleInputChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+    console.log(this.state);
   }
   handleLoginSubmitClick(e) {
     e.preventDefault();
@@ -40,7 +39,8 @@ export default class Order extends React.Component {
                 <Form.Label>👤USUARIO:</Form.Label>
                 <Form.Control
                   type="text"
-                  onChange={this.handleUsuarioChanged}
+                  name="usuario"
+                  onChange={this.handleInputChange}
                   placeholder="Ingrese su usuario"
                 />
               </Form.Group>
@@ -48,7 +48,8 @@ export default class Order extends React.Component {
                 <Form.Label>🔒CONTRASENA:</Form.Label>
                 <Form.Control
                   type="password"
-                  onChange={this.handleContraseñaChanged}
+                  name="contraseña"
+                  onChange={this.handleInputChange}
                   placeholder="Ingrese su contrasena"
                 />
               </Form.Group>
