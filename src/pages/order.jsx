@@ -6,7 +6,7 @@ import React from "react";
 
 function Order(props) {
   const [pedido, setPedido] = useState({
-    folio: "001",
+    folio: props.folio,
     cliente: "",
     telefono: "",
     direccion: "",
@@ -23,7 +23,7 @@ function Order(props) {
         cantidad: 0,
       },
     ],
-    formaPago: "Efectivo",
+    formaPago: props.formasPago[0],
   });
 
   const handlePedidoInputChange = (e) => {
@@ -124,50 +124,27 @@ function Order(props) {
           <Col>
             <fieldset>
               <Form.Group as={Row}>
-                <Form.Label as="legend">TAMANO</Form.Label>
+                <Form.Label as="legend">TAMAÑO</Form.Label>
                 <Col>
-                  <Form.Check type="radio" id="tamaño-1">
-                    <Form.Check.Input
-                      type="radio"
-                      name="tamaño"
-                      value="1"
-                      onChange={handlePedidoInputChange}
-                    />
-                    <Form.Check.Label>
-                      <div>
-                        MEDIANA (30 cm) - 1 ingredientes{" "}
-                        <span style={{ color: "red" }}>$89.90</span>
-                      </div>
-                    </Form.Check.Label>
-                  </Form.Check>
-                  <Form.Check type="radio" id="tamaño-2">
-                    <Form.Check.Input
-                      type="radio"
-                      name="tamaño"
-                      value="2"
-                      onChange={handlePedidoInputChange}
-                    />
-                    <Form.Check.Label>
-                      <div>
-                        GRANDE (35 cm) - 2 ingredientes{" "}
-                        <span style={{ color: "red" }}>$89.90</span>
-                      </div>
-                    </Form.Check.Label>
-                  </Form.Check>
-                  <Form.Check type="radio" id="tamaño-3">
-                    <Form.Check.Input
-                      type="radio"
-                      name="tamaño"
-                      value="3"
-                      onChange={handlePedidoInputChange}
-                    />
-                    <Form.Check.Label>
-                      <div>
-                        JUMBO (45 cm) - 2 ingredientes{" "}
-                        <span style={{ color: "red" }}>$89.90</span>
-                      </div>
-                    </Form.Check.Label>
-                  </Form.Check>
+                  {props.tamaños &&
+                    props.tamaños.map((tamaño) => (
+                      <Form.Check type="radio" key={tamaño.id} id={tamaño.id}>
+                        <Form.Check.Input
+                          type="radio"
+                          name="tamaño"
+                          value={tamaño.id}
+                          onChange={handlePedidoInputChange}
+                        />
+                        <Form.Check.Label>
+                          <div>
+                            {tamaño.descripcion + " "}
+                            <span style={{ color: "red" }}>
+                              ${tamaño.precio}
+                            </span>
+                          </div>
+                        </Form.Check.Label>
+                      </Form.Check>
+                    ))}
                 </Col>
               </Form.Group>
             </fieldset>
@@ -188,38 +165,46 @@ function Order(props) {
             </fieldset>
             <fieldset>
               <Form.Label as="legend">BEBIDAS</Form.Label>
-              <Form.Group controlId={pedido.bebidas[0].id}>
-                <Row>
-                  <Col>
-                    <Form.Control
-                      name={pedido.bebidas[0].id}
-                      type="number"
-                      value={pedido.bebidas[0].cantidad}
-                      onChange={handlePedidoBebidaInputChange}
-                    />
-                  </Col>
-                  <Col md={8}>
-                    <div>
-                      MANZANITA (2 LITROS)
-                      <div style={{ color: "red" }}>$12.50</div>
-                    </div>
-                  </Col>
-                </Row>
-              </Form.Group>
+              {props.bebidas.length > 0 &&
+                props.bebidas.map((bebida) => {
+                  return (
+                    <Form.Group key={bebida.id} controlId={bebida.id}>
+                      <Row>
+                        <Col>
+                          <Form.Control
+                            name={bebida.id}
+                            type="number"
+                            value={bebida.cantidad}
+                            onChange={handlePedidoBebidaInputChange}
+                          />
+                        </Col>
+                        <Col md={8}>
+                          <div>
+                            {bebida.nombre}
+                            <div style={{ color: "red" }}>${bebida.precio}</div>
+                          </div>
+                        </Col>
+                      </Row>
+                    </Form.Group>
+                  );
+                })}
             </fieldset>
           </Col>
         </Row>
 
         <Row className="justify-content-end">
           <Form.Group controlId="forma-pago" className="m-3">
-            <Form.Label>Forma de pago:</Form.Label>
+            <Form.Label>FORMA DE PAGO</Form.Label>
             <Form.Control
               as="select"
               name="formaPago"
               value={pedido.formaPago}
               onChange={handlePedidoInputChange}
             >
-              <option>Efectivo</option>
+              {props.formasPago &&
+                props.formasPago.map((formaPago) => (
+                  <option value={formaPago.id}>{formaPago.nombre}</option>
+                ))}
             </Form.Control>
           </Form.Group>
         </Row>
@@ -241,11 +226,48 @@ function Order(props) {
 export async function getServerSideProps(context) {
   return {
     props: {
+      folio: "001",
       bebidas: [
         {
           id: 1,
-          nombre: "Manzanita",
-          precio: "15",
+          nombre: "COCA-COLA (2 LITROS)",
+          precio: 25.0,
+        },
+        {
+          id: 2,
+          nombre: "SPRITE (2 LITROS)",
+          precio: 20.0,
+        },
+        {
+          id: 3,
+          nombre: "MANZANITA (2 LITROS)",
+          precio: 20.0,
+        },
+      ],
+      tamaños: [
+        {
+          id: 1,
+          descripcion: "MEDIANA (30 cm) - 1 ingrediente",
+          cantidadIngredientesMaxima: 1,
+          precio: 89.9,
+        },
+        {
+          id: 2,
+          descripcion: "GRANDE (35 cm) - 2 ingredientes",
+          cantidadIngredientesMaxima: 2,
+          precio: 99.9,
+        },
+        {
+          id: 3,
+          descripcion: "JUMBO (45 cm) - 3 ingredientes",
+          cantidadIngredientesMaxima: 2,
+          precio: 119.9,
+        },
+      ],
+      formasPago: [
+        {
+          id: 1,
+          nombre: "Efectivo",
         },
       ],
     },
