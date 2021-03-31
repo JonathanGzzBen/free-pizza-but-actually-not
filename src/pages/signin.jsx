@@ -1,19 +1,32 @@
 import { useState } from "react";
 import { Row, Col, Form, Button, CardColumns } from "react-bootstrap";
 import Layout from "../components/layout";
+import { signIn, register } from "../services/users";
+import { useRouter } from "next/router";
+import { auth } from "../services/firebase";
 
-export default function Order() {
-  const [usuario, setUsuario] = useState("");
+export default function SignIn() {
+  const router = useRouter();
+
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      router.push("/");
+    }
+  });
+
+  const [email, setEmail] = useState("");
   const [contraseña, setContraseña] = useState("");
 
   const handleLoginSubmitClick = (e) => {
     e.preventDefault();
-    alert(
-      "Iniciando sesion con el usuario " +
-        usuario +
-        " y la contraseña " +
-        contraseña
-    );
+    signIn(email, contraseña);
+  };
+
+  const handleRegisterSubmitClick = (e) => {
+    e.preventDefault();
+    register(email, contraseña).then((usuario) => {
+      alert(usuario.getIdToken());
+    });
   };
 
   return (
@@ -22,12 +35,12 @@ export default function Order() {
         <Row className="justify-content-center">
           <Col md={5}>
             <Form.Group controlId="usuario">
-              <Form.Label>👤USUARIO:</Form.Label>
+              <Form.Label>👤EMAIL:</Form.Label>
               <Form.Control
-                type="text"
-                value={usuario}
-                onChange={(e) => setUsuario(e.target.value)}
-                placeholder="Ingrese su usuario"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Ingrese su email"
               />
             </Form.Group>
             <Form.Group controlId="contrasena">
@@ -44,6 +57,9 @@ export default function Order() {
                 <Col sm={{ span: 10 }}>
                   <Button type="submit" onClick={handleLoginSubmitClick}>
                     Iniciar Sesion
+                  </Button>
+                  <Button type="submit" onClick={handleRegisterSubmitClick}>
+                    Registrar
                   </Button>
                 </Col>
               </Form.Group>

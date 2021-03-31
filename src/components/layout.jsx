@@ -10,8 +10,20 @@ import {
   Col,
 } from "react-bootstrap";
 import Link from "next/link";
+import { useState } from "react";
+import { getCurrentUser, signOut } from "../services/users";
+import { auth } from "../services/firebase";
 
 export default function Layout({ children }) {
+  const [currentUser, setCurrentUser] = useState(getCurrentUser());
+  auth.onAuthStateChanged((user) => {
+    setCurrentUser(user);
+  });
+
+  const handleSignOut = (e) => {
+    e.preventDefault();
+    signOut();
+  };
   return (
     <div>
       <Navbar bg="light" expand="lg">
@@ -29,20 +41,22 @@ export default function Layout({ children }) {
             <Link href="/order" passHref>
               <Nav.Link>Order</Nav.Link>
             </Link>
-            <Link href="/signin" passHref>
-              <Nav.Link>Iniciar Sesion</Nav.Link>
-            </Link>
-            {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown> */}
+            {currentUser ? (
+              <NavDropdown
+                title={currentUser.displayName || currentUser.email}
+                id="basic-nav-dropdown"
+              >
+                <NavDropdown.Item>Mi Perfil</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={(e) => handleSignOut(e)}>
+                  Cerrar Sesión
+                </NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              <Link href="/signin" passHref>
+                <Nav.Link>Iniciar Sesion</Nav.Link>
+              </Link>
+            )}
           </Nav>
           <Form inline>
             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
