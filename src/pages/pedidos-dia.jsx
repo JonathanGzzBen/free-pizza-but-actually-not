@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Col, Form, Row, Button, Table } from "react-bootstrap";
 import Layout from "../components/layout";
 
-export default function PedidosPorDia() {
+export default function PedidosPorDia(props) {
   const date = new Date();
   const [fechaPedidos, setFechaPedidos] = useState(
     date.toISOString().substring(0, 10)
@@ -27,6 +27,7 @@ export default function PedidosPorDia() {
       cliente,
     });
   };
+
   return (
     <Layout>
       <Form>
@@ -114,30 +115,42 @@ export default function PedidosPorDia() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Thornton</td>
-              <td>Thornton</td>
-              <td>@twitter</td>
-              <td>@twitter</td>
-            </tr>
+            {props.pedidos &&
+              props.pedidos.map((pedido) => (
+                <tr>
+                  <td>{pedido.folio}</td>
+                  <td>{pedido.cliente}</td>
+                  <td>{pedido.detalle}</td>
+                  <td>${pedido.monto}</td>
+                  <td>{pedido.formaPago}</td>
+                </tr>
+              ))}
           </tbody>
         </Table>
       </Row>
     </Layout>
   );
+}
+
+export function getServerSideProps() {
+  return {
+    props: {
+      pedidos: [
+        {
+          folio: "001",
+          cliente: "Mark",
+          detalle: "Pizza Grande...",
+          monto: "350",
+          formaPago: "Efectivo",
+        },
+        {
+          folio: "002",
+          cliente: "Eduardo Lim",
+          detalle: "1 Pizza Grande\n2 COCA-COLAS\nPepperoni\nJamon",
+          monto: "350",
+          formaPago: "Efectivo",
+        },
+      ],
+    },
+  };
 }
