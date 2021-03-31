@@ -2,18 +2,9 @@ import { useState } from "react";
 import { Row, Col, Form, Button, CardColumns } from "react-bootstrap";
 import Layout from "../components/layout";
 
-export default function PayOrder() {
-  const [pedido, setPedido] = useState({
-    folio: "001",
-    cliente: "Nombre del cliente",
-    telefono: "Telefono del cliente",
-    direccion: "Direccion del cliente",
-    pedido: "Resumen del pedido",
-    formaPago: "Forma de pago (EFECTIVO)",
-    subTotal: "$subtotal",
-    iva: "$iva",
-    total: "$total",
-  });
+export default function PayOrder(props) {
+  console.log(props);
+  const [pedido, setPedido] = useState(props.pedido);
 
   const handleCancelClick = (e) => {
     e.preventDefault();
@@ -78,7 +69,7 @@ export default function PayOrder() {
                 as="textarea"
                 style={{ resize: "none" }}
                 rows="5"
-                value={pedido.pedido}
+                value={pedido.detalle}
                 readOnly
               />
             </Form.Group>
@@ -90,15 +81,19 @@ export default function PayOrder() {
             </Form.Group>
             <Form.Group controlId="sub-total">
               <Form.Label>SUB-TOTAL:</Form.Label>
-              <Form.Control type="text" readOnly value={pedido.subTotal} />
+              <Form.Control
+                type="text"
+                readOnly
+                value={"$" + pedido.subTotal}
+              />
             </Form.Group>
             <Form.Group controlId="iva">
               <Form.Label>IVA:</Form.Label>
-              <Form.Control type="text" readOnly value={pedido.iva} />
+              <Form.Control type="text" readOnly value={"$" + pedido.iva} />
             </Form.Group>
             <Form.Group controlId="total">
               <Form.Label>TOTAL:</Form.Label>
-              <Form.Control type="text" readOnly value={pedido.total} />
+              <Form.Control type="text" readOnly value={"$" + pedido.total} />
             </Form.Group>
           </Col>
         </Row>
@@ -123,4 +118,45 @@ export default function PayOrder() {
       </Form>
     </Layout>
   );
+}
+
+export async function getServerSideProps(context) {
+  const receivedObjectFromDb = {
+    folio: "001",
+    cliente: "Jonathan",
+    telefono: "81111111111",
+    direccion: "Direccion de ejemplo",
+    tamaño: "2",
+    especialidades: [
+      {
+        id: 1,
+        incluir: true,
+      },
+    ],
+    bebidas: [
+      {
+        id: 1,
+        cantidad: "2",
+      },
+    ],
+    formaPago: {
+      id: 1,
+      nombre: "Efectivo",
+    },
+  };
+  return {
+    props: {
+      pedido: {
+        folio: receivedObjectFromDb.folio,
+        cliente: receivedObjectFromDb.cliente,
+        telefono: receivedObjectFromDb.telefono,
+        direccion: receivedObjectFromDb.direccion,
+        detalle: "Resumen",
+        formaPago: receivedObjectFromDb.formaPago.nombre,
+        subTotal: 120,
+        iva: 12,
+        total: 132,
+      },
+    },
+  };
 }
