@@ -3,12 +3,15 @@ import { Row, Col, Form, Button } from "react-bootstrap";
 import Layout from "../components/layout";
 import { withRouter } from "next/router";
 import React from "react";
+import { auth } from "../services/firebase";
+import { getCurrentUser } from "../services/users";
 
 function Order(props) {
+  const currentUser = getCurrentUser();
   const [pedido, setPedido] = useState({
     folio: props.folio,
-    cliente: "",
-    telefono: "",
+    cliente: currentUser?.email || "",
+    telefono: currentUser?.phoneNumber || "",
     direccion: "",
     tamaño: "",
     especialidades: [
