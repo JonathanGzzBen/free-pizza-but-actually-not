@@ -3,10 +3,14 @@ import { Row, Col, Form, Button } from "react-bootstrap";
 import Layout from "../components/layout";
 import { withRouter } from "next/router";
 import React from "react";
-import { auth } from "../services/firebase";
 import { getCurrentUser } from "../services/users";
+import { getBebidas } from "../services/bebidas";
+import { getTamaños } from "../services/tamaños";
+import { getFormasPago } from "../services/formasPago";
+import { getFolioPedidoBorrador } from "../services/pedido";
 
 function Order(props) {
+  console.log(props.prueba);
   const currentUser = getCurrentUser();
   const [pedido, setPedido] = useState({
     folio: props.folio,
@@ -140,7 +144,10 @@ function Order(props) {
                         />
                         <Form.Check.Label>
                           <div>
-                            {tamaño.descripcion + " "}
+                            {tamaño.descripcion +
+                              " - " +
+                              tamaño.cantidadIngredientesMaxima +
+                              " ingredientes "}
                             <span style={{ color: "red" }}>
                               ${tamaño.precio}
                             </span>
@@ -227,52 +234,17 @@ function Order(props) {
 }
 
 export async function getServerSideProps(context) {
+  const bebidas = await getBebidas();
+  const tamaños = await getTamaños();
+  const formasPago = await getFormasPago();
+  const folio = await getFolioPedidoBorrador();
   return {
     props: {
-      folio: "001",
-      bebidas: [
-        {
-          id: 1,
-          nombre: "COCA-COLA (2 LITROS)",
-          precio: 25.0,
-        },
-        {
-          id: 2,
-          nombre: "SPRITE (2 LITROS)",
-          precio: 20.0,
-        },
-        {
-          id: 3,
-          nombre: "MANZANITA (2 LITROS)",
-          precio: 20.0,
-        },
-      ],
-      tamaños: [
-        {
-          id: 1,
-          descripcion: "MEDIANA (30 cm) - 1 ingrediente",
-          cantidadIngredientesMaxima: 1,
-          precio: 89.9,
-        },
-        {
-          id: 2,
-          descripcion: "GRANDE (35 cm) - 2 ingredientes",
-          cantidadIngredientesMaxima: 2,
-          precio: 99.9,
-        },
-        {
-          id: 3,
-          descripcion: "JUMBO (45 cm) - 3 ingredientes",
-          cantidadIngredientesMaxima: 2,
-          precio: 119.9,
-        },
-      ],
-      formasPago: [
-        {
-          id: 1,
-          nombre: "Efectivo",
-        },
-      ],
+      prueba: bebidas,
+      folio: folio,
+      bebidas: bebidas,
+      tamaños: tamaños,
+      formasPago: formasPago,
     },
   };
 }
