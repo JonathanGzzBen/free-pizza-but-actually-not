@@ -34,6 +34,7 @@ const updatePedido = (pedido) =>
     especialidades: pedido.especialidades,
     bebidas: pedido.bebidas,
     formaPago: pedido.formaPago,
+    estado: pedido.estado,
   });
 
 export { getFolioPedidoBorrador, getPedidoById, updatePedido };

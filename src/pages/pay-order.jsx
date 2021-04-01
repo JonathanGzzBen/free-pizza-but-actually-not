@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Row, Col, Form, Button, CardColumns } from "react-bootstrap";
 import Layout from "../components/layout";
-import { getPedidoById } from "../services/pedido";
+import { getPedidoById, updatePedido } from "../services/pedido";
 
 export default function PayOrder(props) {
   console.log(props);
@@ -19,6 +19,8 @@ export default function PayOrder(props) {
 
   const handleAceptarClick = (e) => {
     e.preventDefault();
+    setPedido({ ...pedido, estado: "Confirmado" });
+    updatePedido(pedido);
     alert("Su pedido llegara pronto.");
   };
 
@@ -78,7 +80,11 @@ export default function PayOrder(props) {
           <Col>
             <Form.Group controlId="forma-pago">
               <Form.Label>FORMA DE PAGO:</Form.Label>
-              <Form.Control type="text" readOnly value={pedido.formaPago} />
+              <Form.Control
+                type="text"
+                readOnly
+                value={pedido.formaPago.nombre}
+              />
             </Form.Group>
             <Form.Group controlId="sub-total">
               <Form.Label>SUB-TOTAL:</Form.Label>
@@ -126,12 +132,13 @@ export async function getServerSideProps(context) {
   return {
     props: {
       pedido: {
-        folio: receivedObjectFromDb.folio,
-        cliente: receivedObjectFromDb.cliente,
-        telefono: receivedObjectFromDb.telefono,
-        direccion: receivedObjectFromDb.direccion,
+        // folio: receivedObjectFromDb.folio,
+        // cliente: receivedObjectFromDb.cliente,
+        // telefono: receivedObjectFromDb.telefono,
+        // direccion: receivedObjectFromDb.direccion,
+        // formaPago: receivedObjectFromDb.formaPago.nombre,
+        ...receivedObjectFromDb,
         detalle: "Resumen",
-        formaPago: receivedObjectFromDb.formaPago.nombre,
         subTotal: 120,
         iva: 12,
         total: 132,
