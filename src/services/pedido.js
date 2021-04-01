@@ -5,7 +5,7 @@ const getPedidos = async () => {
   const pedidos = [];
   snapshot.forEach((doc) => {
     pedidos.push({
-      id: doc.id,
+      folio: doc.id,
       ...doc.data(),
     });
   });
@@ -37,4 +37,4 @@ const updatePedido = (pedido) =>
     estado: pedido.estado,
   });
 
-export { getFolioPedidoBorrador, getPedidoById, updatePedido };
+export { getPedidos, getFolioPedidoBorrador, getPedidoById, updatePedido };

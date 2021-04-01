@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Col, Form, Row, Button, Table } from "react-bootstrap";
 import Layout from "../components/layout";
+import { getPedidos } from "../services/pedido";
 
 export default function PedidosPorDia(props) {
   const date = new Date();
@@ -122,7 +123,7 @@ export default function PedidosPorDia(props) {
                   <td>{pedido.cliente}</td>
                   <td>{pedido.detalle}</td>
                   <td>${pedido.monto}</td>
-                  <td>{pedido.formaPago}</td>
+                  <td>{pedido.formaPago?.nombre}</td>
                 </tr>
               ))}
           </tbody>
@@ -132,25 +133,11 @@ export default function PedidosPorDia(props) {
   );
 }
 
-export function getServerSideProps() {
+export async function getServerSideProps() {
+  const pedidos = await getPedidos();
   return {
     props: {
-      pedidos: [
-        {
-          folio: "001",
-          cliente: "Mark",
-          detalle: "Pizza Grande...",
-          monto: "350",
-          formaPago: "Efectivo",
-        },
-        {
-          folio: "002",
-          cliente: "Eduardo Lim",
-          detalle: "1 Pizza Grande\n2 COCA-COLAS\nPepperoni\nJamon",
-          monto: "350",
-          formaPago: "Efectivo",
-        },
-      ],
+      pedidos: pedidos,
     },
   };
 }
