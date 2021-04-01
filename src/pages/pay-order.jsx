@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Row, Col, Form, Button, CardColumns } from "react-bootstrap";
 import Layout from "../components/layout";
+import { getPedidoById } from "../services/pedido";
 
 export default function PayOrder(props) {
   console.log(props);
@@ -121,29 +122,7 @@ export default function PayOrder(props) {
 }
 
 export async function getServerSideProps(context) {
-  const receivedObjectFromDb = {
-    folio: "001",
-    cliente: "Jonathan",
-    telefono: "81111111111",
-    direccion: "Direccion de ejemplo",
-    tamaño: "2",
-    especialidades: [
-      {
-        id: 1,
-        incluir: true,
-      },
-    ],
-    bebidas: [
-      {
-        id: 1,
-        cantidad: "2",
-      },
-    ],
-    formaPago: {
-      id: 1,
-      nombre: "Efectivo",
-    },
-  };
+  const receivedObjectFromDb = await getPedidoById(context.query.folio);
   return {
     props: {
       pedido: {

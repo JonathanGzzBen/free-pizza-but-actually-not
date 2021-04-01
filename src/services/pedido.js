@@ -17,4 +17,23 @@ const getFolioPedidoBorrador = async () => {
   return pedidoDoc.id;
 };
 
-export { getFolioPedidoBorrador };
+const getPedidoById = async (id) => {
+  const pedidoDoc = await db.collection("pedidos").doc(id).get();
+  return {
+    folio: pedidoDoc.id,
+    ...pedidoDoc.data(),
+  };
+};
+
+const updatePedido = (pedido) =>
+  db.collection("pedidos").doc(pedido.folio).set({
+    cliente: pedido.cliente,
+    telefono: pedido.telefono,
+    direccion: pedido.direccion,
+    tamaño: pedido.tamaño,
+    especialidades: pedido.especialidades,
+    bebidas: pedido.bebidas,
+    formaPago: pedido.formaPago,
+  });
+
+export { getFolioPedidoBorrador, getPedidoById, updatePedido };

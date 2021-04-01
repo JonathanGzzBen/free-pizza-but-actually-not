@@ -6,11 +6,11 @@ import React from "react";
 import { getCurrentUser } from "../services/users";
 import { getBebidas } from "../services/bebidas";
 import { getTamaños } from "../services/tamaños";
+import { getEspecialidades } from "../services/especialidades";
 import { getFormasPago } from "../services/formasPago";
-import { getFolioPedidoBorrador } from "../services/pedido";
+import { getFolioPedidoBorrador, updatePedido } from "../services/pedido";
 
 function Order(props) {
-  console.log(props.prueba);
   const currentUser = getCurrentUser();
   const [pedido, setPedido] = useState({
     folio: props.folio,
@@ -18,18 +18,8 @@ function Order(props) {
     telefono: currentUser?.phoneNumber || "",
     direccion: "",
     tamaño: "",
-    especialidades: [
-      {
-        id: 1,
-        incluir: false,
-      },
-    ],
-    bebidas: [
-      {
-        id: 1,
-        cantidad: 0,
-      },
-    ],
+    especialidades: props.especialidades,
+    bebidas: props.bebidas,
     formaPago: props.formasPago[0],
   });
 
@@ -41,24 +31,24 @@ function Order(props) {
   };
 
   const handlePedidoEspecialidadInputChange = (e) => {
-    const especialidadId = Number(e.target.name);
+    const especialidadId = e.target.name;
     setPedido({
       ...pedido,
       especialidades: pedido.especialidades.map((especialidad) =>
         especialidad.id === especialidadId
-          ? { ...especialidad, incluir: e.target.checked }
+          ? { ...especialidad, incluir: !!e.target.checked }
           : especialidad
       ),
     });
   };
 
   const handlePedidoBebidaInputChange = (e) => {
-    const bebidaId = Number(e.target.name);
+    const bebidaId = e.target.name;
     setPedido({
       ...pedido,
       bebidas: pedido.bebidas.map((bebida) =>
         bebida.id === bebidaId
-          ? { ...bebida, cantidad: e.target.value }
+          ? { ...bebida, cantidad: Number(e.target.value) }
           : bebida
       ),
     });
@@ -66,7 +56,12 @@ function Order(props) {
 
   const openPayOrderPage = (e) => {
     e.preventDefault();
-    props.router.push("/pay-order");
+    console.log(pedido);
+    updatePedido(pedido);
+    props.router.push({
+      pathname: "/pay-order",
+      query: { folio: pedido.folio },
+    });
   };
 
   return (
@@ -162,14 +157,17 @@ function Order(props) {
               <Form.Group as={Row}>
                 <Form.Label as="legend">ESPECIALIDAD</Form.Label>
                 <Col>
-                  <Form.Check
-                    type="checkbox"
-                    label="PEPPERONI"
-                    name="1"
-                    id="tamaño-1"
-                    checked={pedido.especialidades[0].incluir}
-                    onChange={handlePedidoEspecialidadInputChange}
-                  />
+                  {props.especialidades &&
+                    props.especialidades.map((especialidad) => (
+                      <Form.Check
+                        type="checkbox"
+                        label={especialidad.nombre}
+                        name={especialidad.id}
+                        id={especialidad.id}
+                        checked={especialidad.incluir}
+                        onChange={handlePedidoEspecialidadInputChange}
+                      />
+                    ))}
                 </Col>
               </Form.Group>
             </fieldset>
@@ -236,15 +234,16 @@ function Order(props) {
 export async function getServerSideProps(context) {
   const bebidas = await getBebidas();
   const tamaños = await getTamaños();
+  const especialidades = await getEspecialidades();
   const formasPago = await getFormasPago();
   const folio = await getFolioPedidoBorrador();
   return {
     props: {
-      prueba: bebidas,
       folio: folio,
       bebidas: bebidas,
       tamaños: tamaños,
       formasPago: formasPago,
+      especialidades: especialidades,
     },
   };
 }
