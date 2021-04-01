@@ -21,6 +21,7 @@ function Order(props) {
     especialidades: props.especialidades,
     bebidas: props.bebidas,
     formaPago: props.formasPago[0],
+    estado: "Borrador",
   });
 
   const handlePedidoInputChange = (e) => {
