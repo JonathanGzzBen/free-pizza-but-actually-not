@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Col, Form, Row, Button, Table } from "react-bootstrap";
 import Layout from "../components/layout";
-import { getPedidos } from "../services/pedido";
+import { getDetalle, getPedidos } from "../services/pedido";
 
 export default function PedidosPorDia(props) {
   const date = new Date();
@@ -135,9 +135,15 @@ export default function PedidosPorDia(props) {
 
 export async function getServerSideProps() {
   const pedidos = await getPedidos();
+  const pedidosConDetalle = await Promise.all(
+    pedidos.map(async (pedido) => ({
+      ...pedido,
+      detalle: await getDetalle(pedido),
+    }))
+  );
   return {
     props: {
-      pedidos: pedidos,
+      pedidos: pedidosConDetalle,
     },
   };
 }

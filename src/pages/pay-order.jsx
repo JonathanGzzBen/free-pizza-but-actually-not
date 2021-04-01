@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Row, Col, Form, Button, CardColumns } from "react-bootstrap";
 import Layout from "../components/layout";
-import { getPedidoById, updatePedido } from "../services/pedido";
+import { getPedidoById, updatePedido, getDetalle } from "../services/pedido";
 
 export default function PayOrder(props) {
-  console.log(props);
   const [pedido, setPedido] = useState(props.pedido);
 
   const handleCancelClick = (e) => {
@@ -128,17 +127,13 @@ export default function PayOrder(props) {
 }
 
 export async function getServerSideProps(context) {
-  const receivedObjectFromDb = await getPedidoById(context.query.folio);
+  const pedido = await getPedidoById(context.query.folio);
+  const detalle = await getDetalle(pedido);
   return {
     props: {
       pedido: {
-        // folio: receivedObjectFromDb.folio,
-        // cliente: receivedObjectFromDb.cliente,
-        // telefono: receivedObjectFromDb.telefono,
-        // direccion: receivedObjectFromDb.direccion,
-        // formaPago: receivedObjectFromDb.formaPago.nombre,
-        ...receivedObjectFromDb,
-        detalle: "Resumen",
+        ...pedido,
+        detalle: detalle,
         subTotal: 120,
         iva: 12,
         total: 132,

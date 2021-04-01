@@ -37,4 +37,29 @@ const updatePedido = (pedido) =>
     estado: pedido.estado,
   });
 
-export { getPedidos, getFolioPedidoBorrador, getPedidoById, updatePedido };
+const getDetalle = async (pedido) => {
+  const tamañoDoc = await db.collection("tamaños").doc(pedido.tamaño).get();
+  if (!tamañoDoc.data()) {
+    return "";
+  }
+  let detalle = "Tamaño: " + tamañoDoc.data().descripcion + "\n";
+  pedido.especialidades.forEach((especialidad) => {
+    if (especialidad.incluir) {
+      detalle += especialidad.nombre + "\n";
+    }
+  });
+  pedido.bebidas.forEach((bebida) => {
+    if (bebida.cantidad > 0) {
+      detalle += bebida.nombre + " x" + bebida.cantidad + "\n";
+    }
+  });
+  return detalle;
+};
+
+export {
+  getPedidos,
+  getFolioPedidoBorrador,
+  getPedidoById,
+  updatePedido,
+  getDetalle,
+};
