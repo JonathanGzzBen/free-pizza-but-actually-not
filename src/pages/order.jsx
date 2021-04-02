@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import Layout from "../components/layout";
-import { withRouter } from "next/router";
+import { useRouter } from "next/router";
 import React from "react";
 import { getCurrentUser } from "../services/users";
 import { getBebidas } from "../services/bebidas";
@@ -10,7 +10,7 @@ import { getEspecialidades } from "../services/especialidades";
 import { getFormasPago } from "../services/formasPago";
 import { getFolioPedidoBorrador, updatePedido } from "../services/pedido";
 
-function Order(props) {
+export default function Order(props) {
   const currentUser = getCurrentUser();
   const [pedido, setPedido] = useState({
     folio: props.folio,
@@ -82,12 +82,12 @@ function Order(props) {
     return true;
   };
 
+  const router = useRouter();
   const openPayOrderPage = (e) => {
     e.preventDefault();
     if (isPedidoValid(pedido)) {
       updatePedido(pedido);
-      window.location.href = `/pay-order?folio=${pedido.folio}`;
-      props.router.push({
+      router.push({
         pathname: "/pay-order",
         query: { folio: pedido.folio },
       });
@@ -278,5 +278,3 @@ export async function getServerSideProps(context) {
     },
   };
 }
-
-export default withRouter(Order);
