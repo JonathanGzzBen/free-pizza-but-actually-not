@@ -8,20 +8,32 @@ export default function PedidosPorDia(props) {
   const [nuevaContraseña, setNuevaContraseña] = useState("");
   const [puesto, setPuesto] = useState("Cliente");
 
-  const clearInputsAndSetValue = (setFunction, value) => {
-    setNombre("");
-    setNuevaContraseña("");
-    setPuesto("Cliente");
-    setFunction(value);
-  };
-
   const searchSubmitHandler = (e) => {
     e.preventDefault();
-    console.log({
-      nombre,
-      nuevaContraseña,
-      puesto,
+  };
+
+  const handleActualizar = async (e) => {
+    e.preventDefault();
+    const response = await fetch("/api/update-user", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id,
+        nombre,
+        nuevaContraseña,
+        puesto,
+      }),
     });
+  };
+
+  const handleSeleccionarClick = async (e, usuario) => {
+    e.preventDefault();
+    setId(usuario.id || "");
+    setPuesto(usuario.puesto || "Cliente");
+    setNombre(usuario.nombre || usuario.email);
+    setNuevaContraseña("");
   };
 
   return (
@@ -40,11 +52,11 @@ export default function PedidosPorDia(props) {
               <Form.Control
                 as="select"
                 value={puesto}
-                onChange={(e) =>
-                  clearInputsAndSetValue(setPuesto, e.target.value)
-                }
+                onChange={(e) => setPuesto(e.target.value)}
               >
-                <option>Cliente</option>
+                <option value="Cliente">Cliente</option>
+                <option value="Administrador">Administrador</option>
+                <option value="Repartidor">Repartidor</option>
               </Form.Control>
             </Form.Group>
           </Col>
@@ -56,9 +68,7 @@ export default function PedidosPorDia(props) {
               <Form.Control
                 type="text"
                 value={nombre}
-                onChange={(e) =>
-                  clearInputsAndSetValue(setNombre, e.target.value)
-                }
+                onChange={(e) => setNombre(e.target.value)}
               />
             </Form.Group>
           </Col>
@@ -68,9 +78,7 @@ export default function PedidosPorDia(props) {
               <Form.Control
                 type="text"
                 value={nuevaContraseña}
-                onChange={(e) =>
-                  clearInputsAndSetValue(setNuevaContraseña, e.target.value)
-                }
+                onChange={(e) => setNuevaContraseña(e.target.value)}
               />
             </Form.Group>
           </Col>
@@ -79,7 +87,7 @@ export default function PedidosPorDia(props) {
           <Form.Group>
             <Row>
               <Col>
-                <Button type="submit" onClick={searchSubmitHandler}>
+                <Button type="submit" onClick={handleActualizar}>
                   Actualizar
                 </Button>
               </Col>
@@ -104,6 +112,7 @@ export default function PedidosPorDia(props) {
               <th>Id</th>
               <th>Nombre</th>
               <th>Puesto</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -111,8 +120,13 @@ export default function PedidosPorDia(props) {
               props.usuarios.map((usuario) => (
                 <tr>
                   <td>{usuario.id}</td>
-                  <td>{usuario.displayName || usuario.email}</td>
+                  <td>{usuario.nombre || usuario.email}</td>
                   <td>{usuario.puesto || "Cliente"}</td>
+                  <td>
+                    <button onClick={(e) => handleSeleccionarClick(e, usuario)}>
+                      Seleccionar
+                    </button>
+                  </td>
                 </tr>
               ))}
           </tbody>

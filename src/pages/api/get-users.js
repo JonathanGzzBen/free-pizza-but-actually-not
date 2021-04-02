@@ -12,7 +12,12 @@ export default async (req, res) => {
   const populateUsers = async (nextPageToken) => {
     const listUsersResult = await admin.auth().listUsers(1000, nextPageToken);
     listUsersResult.users.forEach((userRecord) => {
-      users.push({ id: userRecord.uid, email: userRecord.email });
+      users.push({
+        id: userRecord.uid,
+        email: userRecord.email,
+        puesto: userRecord.customClaims?.puesto,
+        nombre: userRecord.displayName,
+      });
     });
     if (listUsersResult.pageToken) {
       await populateUsers(listUsersResult.pageToken);
