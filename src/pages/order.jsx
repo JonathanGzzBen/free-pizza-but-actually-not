@@ -55,14 +55,43 @@ function Order(props) {
     });
   };
 
+  const isPedidoValid = ({
+    folio,
+    cliente,
+    telefono,
+    direccion,
+    tamaño,
+    especialidades,
+    bebidas,
+    formaPago,
+  }) => {
+    if (
+      !(
+        folio &&
+        cliente &&
+        telefono &&
+        direccion &&
+        tamaño &&
+        especialidades &&
+        bebidas &&
+        formaPago
+      )
+    ) {
+      return false;
+    }
+    return true;
+  };
+
   const openPayOrderPage = (e) => {
     e.preventDefault();
-    console.log(pedido);
-    updatePedido(pedido);
-    props.router.push({
-      pathname: "/pay-order",
-      query: { folio: pedido.folio },
-    });
+    if (isPedidoValid(pedido)) {
+      updatePedido(pedido);
+      window.location.href = `/pay-order?folio=${pedido.folio}`;
+      props.router.push({
+        pathname: "/pay-order",
+        query: { folio: pedido.folio },
+      });
+    }
   };
 
   return (
@@ -100,6 +129,7 @@ function Order(props) {
               <Form.Label>TELEFONO:</Form.Label>
               <Form.Control
                 type="text"
+                name="telefono"
                 value={pedido.telefono}
                 onChange={handlePedidoInputChange}
                 placeholder="Ingrese telefono"
