@@ -1,15 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Col, Form, Row, Button, Table } from "react-bootstrap";
 import Layout from "../components/layout";
 import { useRouter } from "next/router";
 
 export default function PedidosPorDia(props) {
+  const fetchUsuarios = async () => {
+    const usuariosResult = await fetch(props.usersApiRoute);
+    return await usuariosResult.json();
+  };
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [usuarios, setUsuarios] = useState(null);
   const [id, setId] = useState("");
   const [nombre, setNombre] = useState("");
   const [nuevaContraseña, setNuevaContraseña] = useState("");
   const [puesto, setPuesto] = useState("Cliente");
 
-  const searchSubmitHandler = (e) => {
+  useEffect(async () => {
+    setUsuarios(await fetchUsuarios());
+    setIsLoading(false);
+  }, []);
+
+  const searchSubmitHandler = async (e) => {
     e.preventDefault();
   };
 
@@ -129,8 +141,14 @@ export default function PedidosPorDia(props) {
             </tr>
           </thead>
           <tbody>
-            {props.usuarios &&
-              props.usuarios.map((usuario) => (
+            {isLoading && (
+              <tr style={{ textAlign: "center" }}>
+                <td colSpan="4">Cargando...</td>
+              </tr>
+            )}
+            {!isLoading &&
+              usuarios &&
+              usuarios.map((usuario) => (
                 <tr>
                   <td>{usuario.id}</td>
                   <td>{usuario.nombre || usuario.email}</td>
@@ -149,11 +167,11 @@ export default function PedidosPorDia(props) {
   );
 }
 
-export async function getServerSideProps() {
-  const usuariosResult = await fetch(`${process.env.APP_HOST}/api/users`);
+export async function getStaticProps() {
+  const usersApiRoute = `${process.env.APP_HOST}/api/users`;
   return {
     props: {
-      usuarios: await usuariosResult.json(),
+      usersApiRoute: usersApiRoute,
     },
   };
 }
