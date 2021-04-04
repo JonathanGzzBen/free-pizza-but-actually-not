@@ -3,9 +3,9 @@ import { Col, Form, Row, Button, Table } from "react-bootstrap";
 import Layout from "../components/layout";
 import { useRouter } from "next/router";
 
-export default function PedidosPorDia(props) {
+export default function PedidosPorDia() {
   const fetchUsuarios = async () => {
-    const usuariosResult = await fetch(props.usersApiRoute);
+    const usuariosResult = await fetch("/api/users");
     return await usuariosResult.json();
   };
 
@@ -60,6 +60,38 @@ export default function PedidosPorDia(props) {
       alert("No se puedo actualizar al usuario");
       router.reload(router.asPath);
     }
+  };
+
+  const handleBorrarClick = async (e) => {
+    e.preventDefault();
+    if (!id) {
+      alert("Seleccione un usuario");
+      return;
+    }
+    if (
+      usuarios.filter((usuario) => usuario.puesto === "Administrador")
+        .length === 1
+    ) {
+      alert(
+        "No puede eliminar a este usuario porque es el último administrador disponible"
+      );
+      return;
+    }
+    const response = await fetch("/api/users", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    });
+    if (response.status === 200) {
+      alert("Usuario eliminado");
+      setUsuarios(await fetchUsuarios());
+    }
+    setId("");
+    setNombre("");
+    setNombre("");
+    setNuevaContraseña("");
   };
 
   const handleSeleccionarClick = async (e, usuario) => {
@@ -131,7 +163,7 @@ export default function PedidosPorDia(props) {
                 </Button>
               </Col>
               <Col>
-                <Button type="submit" onClick={searchSubmitHandler}>
+                <Button type="submit" onClick={handleBorrarClick}>
                   Borrar
                 </Button>
               </Col>
@@ -174,13 +206,4 @@ export default function PedidosPorDia(props) {
       </Row>
     </Layout>
   );
-}
-
-export async function getStaticProps() {
-  const usersApiRoute = `${process.env.APP_HOST}/api/users`;
-  return {
-    props: {
-      usersApiRoute: usersApiRoute,
-    },
-  };
 }

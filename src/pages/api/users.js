@@ -40,6 +40,9 @@ export default async (req, res) => {
       .setCustomUserClaims(req.body.id, { puesto: req.body.puesto });
     const updatedUser = await admin.auth().getUser(req.body.id);
     res.status(200).json({ updatedUser });
+  } else if (req.method === "DELETE") {
+    await admin.auth().deleteUser(req.body.id);
+    res.status(200).send();
   }
   res.status(400).send();
 };
