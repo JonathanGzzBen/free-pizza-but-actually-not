@@ -10,15 +10,28 @@ import {
   Col,
 } from "react-bootstrap";
 import Link from "next/link";
-import { useState } from "react";
-import { getCurrentUser, signOut } from "../services/users";
+import { useEffect, useState } from "react";
+import { signOut } from "../services/users";
 import { auth } from "../services/firebase";
 
 export default function Layout({ children }) {
-  const [currentUser, setCurrentUser] = useState(getCurrentUser());
-  auth.onAuthStateChanged((user) => {
-    setCurrentUser(user);
-  });
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(async () => {
+    auth.onAuthStateChanged(async (user) => {
+      setCurrentUser(null);
+      if (user) {
+        try {
+          const idTokenResult = await user.getIdTokenResult(true);
+          console.log(idTokenResult?.claims?.puesto);
+          setCurrentUser({ ...user, puesto: idTokenResult?.claims?.puesto });
+        } catch {
+          setCurrentUser(null);
+        }
+      } else {
+        setCurrentUser(null);
+      }
+    });
+  }, []);
 
   const handleSignOut = (e) => {
     e.preventDefault();
@@ -47,6 +60,18 @@ export default function Layout({ children }) {
                 id="basic-nav-dropdown"
               >
                 <NavDropdown.Item>Mi Perfil</NavDropdown.Item>
+                <NavDropdown.Divider />
+                {currentUser.puesto === "Administrador" && (
+                  <Link href="/administrar-usuarios" passHref>
+                    <NavDropdown.Item>Administrar Usuarios</NavDropdown.Item>
+                  </Link>
+                )}
+                {(currentUser.puesto === "Administrador" ||
+                  currentUser.puesto === "Repartidor") && (
+                  <Link href="/administrar-usuarios" passHref>
+                    <NavDropdown.Item>Panel de entregas</NavDropdown.Item>
+                  </Link>
+                )}
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={(e) => handleSignOut(e)}>
                   Cerrar Sesión
