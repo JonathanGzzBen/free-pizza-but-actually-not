@@ -23,10 +23,12 @@ export default function PedidosPorDia(props) {
 
   const searchSubmitHandler = async (e) => {
     e.preventDefault();
-    if (nombre) {
+    if (nombre && puesto) {
       setUsuarios(
-        (await fetchUsuarios()).filter((usuario) =>
-          usuario.nombre.toLowerCase().match(`${nombre.toLowerCase()}*`)
+        (await fetchUsuarios()).filter(
+          (usuario) =>
+            usuario.nombre.toLowerCase().match(`${nombre.toLowerCase()}*`) &&
+            usuario.puesto === puesto
         )
       );
     }
