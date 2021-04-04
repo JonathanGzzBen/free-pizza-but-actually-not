@@ -16,6 +16,10 @@ export default function PedidosPorDia(props) {
   const router = useRouter();
   const handleActualizar = async (e) => {
     e.preventDefault();
+    if (!(id && nombre && puesto)) {
+      alert("Seleccione un usuario");
+      return;
+    }
     const response = await fetch("/api/users", {
       method: "PUT",
       headers: {
