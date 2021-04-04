@@ -68,7 +68,7 @@ export default function Layout({ children }) {
                 )}
                 {(currentUser.puesto === "Administrador" ||
                   currentUser.puesto === "Repartidor") && (
-                  <Link href="/administrar-usuarios" passHref>
+                  <Link href="/delivery-dashboard" passHref>
                     <NavDropdown.Item>Panel de entregas</NavDropdown.Item>
                   </Link>
                 )}
