@@ -23,6 +23,13 @@ export default function PedidosPorDia(props) {
 
   const searchSubmitHandler = async (e) => {
     e.preventDefault();
+    if (nombre) {
+      setUsuarios(
+        (await fetchUsuarios()).filter((usuario) =>
+          usuario.nombre.toLowerCase().match(`${nombre.toLowerCase()}*`)
+        )
+      );
+    }
   };
 
   const router = useRouter();
