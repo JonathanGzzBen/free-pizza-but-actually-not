@@ -1,7 +1,8 @@
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { Col, Form, Row, Button, Table } from "react-bootstrap";
 import Layout from "../components/layout";
-import { useRouter } from "next/router";
+import { auth } from "../services/firebase";
 
 export default function PedidosPorDia() {
   const fetchUsuarios = async () => {
@@ -16,7 +17,19 @@ export default function PedidosPorDia() {
   const [nuevaContraseña, setNuevaContraseña] = useState("");
   const [puesto, setPuesto] = useState("Cliente");
 
+  const router = useRouter();
   useEffect(async () => {
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        try {
+          const idTokenResult = await user.getIdTokenResult(true);
+          console.log(idTokenResult?.claims?.puesto);
+          if (idTokenResult?.claims?.puesto !== "Administrador") {
+            router.push("/signin");
+          }
+        } catch {}
+      }
+    });
     setUsuarios(await fetchUsuarios());
     setIsLoading(false);
   }, []);
