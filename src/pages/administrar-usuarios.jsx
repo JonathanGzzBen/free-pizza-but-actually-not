@@ -14,7 +14,7 @@ export default function PedidosPorDia(props) {
 
   const handleActualizar = async (e) => {
     e.preventDefault();
-    const response = await fetch("/api/update-user", {
+    const response = await fetch("/api/users", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -137,7 +137,7 @@ export default function PedidosPorDia(props) {
 }
 
 export async function getServerSideProps() {
-  const usuariosResult = await fetch(`${process.env.APP_HOST}/api/get-users`);
+  const usuariosResult = await fetch(`${process.env.APP_HOST}/api/users`);
   return {
     props: {
       usuarios: await usuariosResult.json(),
