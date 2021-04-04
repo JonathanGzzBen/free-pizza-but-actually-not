@@ -34,7 +34,12 @@ export default function PedidosPorDia() {
     }
   };
 
-  const router = useRouter();
+  const clearInputs = () => {
+    setId("");
+    setNombre("");
+    setNuevaContraseña("");
+  };
+
   const handleActualizar = async (e) => {
     e.preventDefault();
     if (!(id && nombre && puesto)) {
@@ -55,10 +60,12 @@ export default function PedidosPorDia() {
     });
     if (response.status == 200) {
       alert("Usuario actualizado exitosamente");
-      router.reload(router.asPath);
+      clearInputs();
+      setUsuarios(await fetchUsuarios());
     } else {
       alert("No se puedo actualizar al usuario");
-      router.reload(router.asPath);
+      clearInputs();
+      setUsuarios(await fetchUsuarios());
     }
   };
 
@@ -88,10 +95,7 @@ export default function PedidosPorDia() {
       alert("Usuario eliminado");
       setUsuarios(await fetchUsuarios());
     }
-    setId("");
-    setNombre("");
-    setNombre("");
-    setNuevaContraseña("");
+    clearInputs();
   };
 
   const handleSeleccionarClick = async (e, usuario) => {
