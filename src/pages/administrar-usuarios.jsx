@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Col, Form, Row, Button, Table } from "react-bootstrap";
 import Layout from "../components/layout";
+import { useRouter } from "next/router";
 
 export default function PedidosPorDia(props) {
   const [id, setId] = useState("");
@@ -12,6 +13,7 @@ export default function PedidosPorDia(props) {
     e.preventDefault();
   };
 
+  const router = useRouter();
   const handleActualizar = async (e) => {
     e.preventDefault();
     const response = await fetch("/api/users", {
@@ -26,6 +28,13 @@ export default function PedidosPorDia(props) {
         puesto,
       }),
     });
+    if (response.status == 200) {
+      alert("Usuario actualizado exitosamente");
+      router.reload(router.asPath);
+    } else {
+      alert("No se puedo actualizar al usuario");
+      router.reload(router.asPath);
+    }
   };
 
   const handleSeleccionarClick = async (e, usuario) => {
