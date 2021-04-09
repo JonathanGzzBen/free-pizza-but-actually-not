@@ -17,9 +17,17 @@ export default function SignIn() {
   const [email, setEmail] = useState("");
   const [contraseña, setContraseña] = useState("");
 
-  const handleLoginSubmitClick = (e) => {
+  const handleLoginSubmitClick = async (e) => {
     e.preventDefault();
-    signIn(email, contraseña);
+    try {
+      await signIn(email, contraseña);
+    } catch (e) {
+      if (e.code === "auth/invalid-email") {
+        alert("Email no válido");
+      } else {
+        alert("Email o contraseña escrito incorrectamente");
+      }
+    }
   };
 
   const handleRegisterSubmitClick = (e) => {

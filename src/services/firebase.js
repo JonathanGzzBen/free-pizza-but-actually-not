@@ -14,6 +14,7 @@ const app =
     : firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
+auth.languageCode = "es";
 
 export default app;
 export { db, auth };
