@@ -14,7 +14,7 @@ export default function Order(props) {
   const currentUser = getCurrentUser();
   const [pedido, setPedido] = useState({
     folio: props.folio,
-    cliente: currentUser?.email || "",
+    cliente: currentUser?.displayName || currentUser?.email || "",
     telefono: currentUser?.phoneNumber || "",
     direccion: "",
     tamaño: "",
