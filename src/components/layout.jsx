@@ -59,7 +59,9 @@ export default function Layout({ children }) {
                 title={currentUser.displayName || currentUser.email}
                 id="basic-nav-dropdown"
               >
-                <NavDropdown.Item>Mi Perfil</NavDropdown.Item>
+                <Link href="/profile" passHref>
+                  <NavDropdown.Item>Mi Perfil</NavDropdown.Item>
+                </Link>
                 <NavDropdown.Divider />
                 {currentUser.puesto === "Administrador" && (
                   <Link href="/administrar-usuarios" passHref>
