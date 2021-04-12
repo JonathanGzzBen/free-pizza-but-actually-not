@@ -1,3 +1,4 @@
+import Cookies from "cookies";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { Col, Form, Row, Button, Table } from "react-bootstrap";
@@ -9,8 +10,9 @@ import {
   getPedidos,
   updatePedido,
 } from "../services/pedido";
+import { tokenName } from "../services/firebase";
 
-export default function PedidosPorDia() {
+export default function PedidosPorDia(props) {
   const date = new Date();
   const [fechaPedidos, setFechaPedidos] = useState(
     date.toISOString().substring(0, 10)
@@ -28,6 +30,7 @@ export default function PedidosPorDia() {
 
   const router = useRouter();
   useEffect(async () => {
+    console.log(props);
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         try {
@@ -319,4 +322,31 @@ export default function PedidosPorDia() {
       </Row>
     </Layout>
   );
+}
+
+export async function getServerSideProps({ req, res }) {
+  const cookies = new Cookies(req, res);
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: JSON.stringify({
+      token: cookies.get(tokenName),
+    }),
+  };
+  const response = await fetch("http://localhost:3000/api/validate", {
+    headers,
+  });
+  const user = (await response.json()).user;
+  if (
+    ["Administrador", "Repartidor"].indexOf(user?.customClaims?.puesto) === -1
+  ) {
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
 }

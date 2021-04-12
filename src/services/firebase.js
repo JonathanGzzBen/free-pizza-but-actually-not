@@ -1,4 +1,5 @@
 import firebase from "firebase";
+import cookie from "js-cookie";
 const firebaseConfig = {
   apiKey: "AIzaSyCVCp9-zpgfj3w6t3FssVHP9eNiedc94DI",
   authDomain: "free-pizza-but-actually-not.firebaseapp.com",
@@ -16,5 +17,16 @@ const db = firebase.firestore();
 const auth = firebase.auth();
 auth.languageCode = "es";
 
+const tokenName = "free-pizza-token";
+
+auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    const token = await user.getIdToken();
+    cookie.set(tokenName, token, { expires: 14 });
+  } else {
+    cookie.remove(tokenName);
+  }
+});
+
 export default app;
-export { db, auth };
+export { db, auth, tokenName };
