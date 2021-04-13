@@ -2,14 +2,13 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { Col, Form, Row, Button, Table } from "react-bootstrap";
 import Layout from "../components/layout";
-import { auth } from "../services/firebase";
 import {
   getDetalle,
   getPedidoById,
   getPedidos,
   updatePedido,
 } from "../services/pedido";
-import { validateOnServerSide } from "../services/users";
+import { allowOnlyIfOnRole } from "../services/authorization";
 
 export default function PedidosPorDia(props) {
   const date = new Date();
@@ -27,25 +26,7 @@ export default function PedidosPorDia(props) {
   const [monto, setMonto] = useState(0);
   const [isPedidoSeleccionado, setIsPedidoSeleccionado] = useState(false);
 
-  const router = useRouter();
   useEffect(async () => {
-    console.log(props);
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        try {
-          const idTokenResult = await user.getIdTokenResult(true);
-          console.log(idTokenResult?.claims?.puesto);
-          if (
-            ["Administrador", "Repartidor"].indexOf(
-              idTokenResult?.claims?.puesto
-            ) === -1
-          ) {
-            router.push("/signin");
-          }
-        } catch {}
-      }
-    });
-
     setPedidos(
       (await getPedidos()).filter((pedido) => pedido.estado === estado)
     );
@@ -323,19 +304,5 @@ export default function PedidosPorDia(props) {
   );
 }
 
-export async function getServerSideProps({ req, res }) {
-  const user = await validateOnServerSide(req, res);
-  if (
-    ["Administrador", "Repartidor"].indexOf(user?.customClaims?.puesto) === -1
-  ) {
-    return {
-      redirect: {
-        destination: "/signin",
-        permanent: false,
-      },
-    };
-  }
-  return {
-    props: {},
-  };
-}
+const allowOnlyIfAdmin = allowOnlyIfOnRole(["Administrador", "Repartidor"]);
+export { allowOnlyIfAdmin as getServerSideProps };
