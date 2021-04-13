@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Col, Form, Row, Button, Table } from "react-bootstrap";
 import Layout from "../components/layout";
 import { auth } from "../services/firebase";
+import { allowOnlyIfOnRole } from "../services/authorization";
 
 export default function PedidosPorDia() {
   const fetchUsuarios = async () => {
