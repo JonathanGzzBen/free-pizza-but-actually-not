@@ -304,5 +304,8 @@ export default function PedidosPorDia(props) {
   );
 }
 
-const allowOnlyIfAdmin = allowOnlyIfOnRole(["Administrador", "Repartidor"]);
-export { allowOnlyIfAdmin as getServerSideProps };
+const allowOnlyIfAdministradorOrRepartidor = allowOnlyIfOnRole([
+  "Administrador",
+  "Repartidor",
+]);
+export { allowOnlyIfAdministradorOrRepartidor as getServerSideProps };

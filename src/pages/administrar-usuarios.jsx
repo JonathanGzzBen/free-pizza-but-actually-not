@@ -224,3 +224,6 @@ export default function PedidosPorDia() {
     </Layout>
   );
 }
+
+const allowOnlyIfAdmin = allowOnlyIfOnRole(["Administrador"]);
+export { allowOnlyIfAdmin as getServerSideProps };

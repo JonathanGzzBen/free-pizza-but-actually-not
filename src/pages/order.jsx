@@ -9,6 +9,7 @@ import { getTamaños } from "../services/tamaños";
 import { getEspecialidades } from "../services/especialidades";
 import { getFormasPago } from "../services/formasPago";
 import { getFolioPedidoBorrador, updatePedido } from "../services/pedido";
+import { redirectIfUserNotSignedIn } from "../services/authorization";
 
 export default function Order(props) {
   const currentUser = getCurrentUser();
@@ -262,7 +263,11 @@ export default function Order(props) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps({ req, res }) {
+  const redirectResult = await redirectIfUserNotSignedIn(req, res);
+  if (redirectResult) {
+    return redirectResult;
+  }
   const bebidas = await getBebidas();
   const tamaños = await getTamaños();
   const especialidades = await getEspecialidades();
