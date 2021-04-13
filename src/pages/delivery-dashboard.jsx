@@ -1,4 +1,3 @@
-import Cookies from "cookies";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { Col, Form, Row, Button, Table } from "react-bootstrap";
@@ -10,7 +9,7 @@ import {
   getPedidos,
   updatePedido,
 } from "../services/pedido";
-import { tokenName } from "../services/firebase";
+import { validateOnServerSide } from "../services/users";
 
 export default function PedidosPorDia(props) {
   const date = new Date();
@@ -325,17 +324,7 @@ export default function PedidosPorDia(props) {
 }
 
 export async function getServerSideProps({ req, res }) {
-  const cookies = new Cookies(req, res);
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: JSON.stringify({
-      token: cookies.get(tokenName),
-    }),
-  };
-  const response = await fetch("http://localhost:3000/api/validate", {
-    headers,
-  });
-  const user = (await response.json()).user;
+  const user = await validateOnServerSide(req, res);
   if (
     ["Administrador", "Repartidor"].indexOf(user?.customClaims?.puesto) === -1
   ) {
