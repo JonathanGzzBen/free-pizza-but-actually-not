@@ -8,6 +8,7 @@ import {
   Container,
   Row,
   Col,
+  Image,
 } from "react-bootstrap";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -42,7 +43,7 @@ export default function Layout({ children }) {
       <Navbar bg="light" expand="lg">
         <Link href="/" passHref>
           <Navbar.Brand>
-            Free Pizza<sub>but actually not</sub>
+            <Image fluid src="/free-pizza-logo.jpeg" width={"150px"} />
           </Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -59,7 +60,9 @@ export default function Layout({ children }) {
                 title={currentUser.displayName || currentUser.email}
                 id="basic-nav-dropdown"
               >
-                <NavDropdown.Item>Mi Perfil</NavDropdown.Item>
+                <Link href="/profile" passHref>
+                  <NavDropdown.Item>Mi Perfil</NavDropdown.Item>
+                </Link>
                 <NavDropdown.Divider />
                 {currentUser.puesto === "Administrador" && (
                   <Link href="/administrar-usuarios" passHref>
