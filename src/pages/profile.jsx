@@ -3,6 +3,7 @@ import { Row, Col, Form, Button, Image } from "react-bootstrap";
 import Layout from "../components/layout";
 import { auth } from "../services/firebase";
 import { useRouter } from "next/router";
+import { redirectIfUserNotSignedIn } from "../services/authorization";
 
 export default function Profile(props) {
   const [currentUser, setCurrentUser] = useState(null);
@@ -66,4 +67,12 @@ export default function Profile(props) {
       </Form>
     </Layout>
   );
+}
+
+export async function getServerSideProps({ req, res }) {
+  const redirectResult = await redirectIfUserNotSignedIn(req, res);
+  if (redirectResult) {
+    return redirectResult;
+  }
+  return { props: {} };
 }

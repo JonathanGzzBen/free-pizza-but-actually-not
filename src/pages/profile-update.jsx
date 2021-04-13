@@ -94,3 +94,11 @@ export default function Profile() {
     </Layout>
   );
 }
+
+export async function getServerSideProps({ req, res }) {
+  const redirectResult = await redirectIfUserNotSignedIn(req, res);
+  if (redirectResult) {
+    return redirectResult;
+  }
+  return { props: {} };
+}
