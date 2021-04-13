@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { signOut } from "../services/users";
 import { auth } from "../services/firebase";
+import { useRouter } from "next/router";
 
 export default function Layout({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
@@ -34,9 +35,11 @@ export default function Layout({ children }) {
     });
   }, []);
 
+  const router = useRouter();
   const handleSignOut = (e) => {
     e.preventDefault();
     signOut();
+    router.push("/");
   };
   return (
     <div>
