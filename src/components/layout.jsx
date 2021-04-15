@@ -35,12 +35,12 @@ export default function Layout({ children }) {
     });
   }, []);
 
-  const router = useRouter();
   const handleSignOut = (e) => {
     e.preventDefault();
     signOut();
-    router.push("/");
+    window.location.href = "/";
   };
+
   return (
     <div>
       <Navbar bg="light" expand="lg">
