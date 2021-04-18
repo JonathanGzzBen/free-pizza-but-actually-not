@@ -3,6 +3,7 @@ import { Form, Row } from "react-bootstrap";
 import Layout from "../components/layout";
 import BebidaEditTable from "../components/bebida-edit-table";
 import EspecialidadesEditTable from "../components/especialidades-edit-table";
+import TamañosEditTable from "../components/tamaños-edit-table";
 
 export default function MenuEdit() {
   return (
@@ -13,6 +14,9 @@ export default function MenuEdit() {
         </Row>
         <Row>
           <EspecialidadesEditTable />
+        </Row>
+        <Row>
+          <TamañosEditTable />
         </Row>
       </Form>
     </Layout>

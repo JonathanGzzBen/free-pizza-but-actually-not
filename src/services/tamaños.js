@@ -12,4 +12,23 @@ const getTamaños = async () => {
   return tamaños;
 };
 
-export { getTamaños };
+const agregarTamaño = (nuevoTamaño) =>
+  db.collection("tamaños").add({
+    cantidadIngredientesMaxima: Number(nuevoTamaño.cantidadIngredientesMaxima),
+    descripcion: nuevoTamaño.descripcion,
+    precio: Number(nuevoTamaño.precio.toString().replace("$", "")),
+  });
+const eliminarTamaño = (tamaño) =>
+  db.collection("tamaños").doc(tamaño.id).delete();
+
+const actualizarTamaño = (tamaño) =>
+  db
+    .collection("tamaños")
+    .doc(tamaño.id)
+    .update({
+      cantidadIngredientesMaxima: Number(tamaño.cantidadIngredientesMaxima),
+      descripcion: tamaño.descripcion,
+      precio: Number(tamaño.precio.toString().replace("$", "")),
+    });
+
+export { getTamaños, agregarTamaño, eliminarTamaño, actualizarTamaño };
