@@ -12,4 +12,24 @@ const getEspecialidades = async () => {
   return especialidades;
 };
 
-export { getEspecialidades };
+const agregarEspecialidad = (nuevaEspecialidad) =>
+  db.collection("especialidades").add({
+    nombre: nuevaEspecialidad.nombre,
+    descripcion: nuevaEspecialidad.descripcion,
+  });
+
+const eliminarEspecialidad = (especialidad) =>
+  db.collection("especialidades").doc(especialidad.id).delete();
+
+const actualizarEspecialidad = (especialidad) =>
+  db.collection("especialidades").doc(especialidad.id).update({
+    nombre: especialidad.nombre,
+    descripcion: especialidad.descripcion,
+  });
+
+export {
+  getEspecialidades,
+  agregarEspecialidad,
+  eliminarEspecialidad,
+  actualizarEspecialidad,
+};
