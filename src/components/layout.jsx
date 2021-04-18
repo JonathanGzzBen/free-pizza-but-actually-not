@@ -14,7 +14,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { signOut } from "../services/users";
 import { auth } from "../services/firebase";
-import { useRouter } from "next/router";
 
 export default function Layout({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
@@ -24,7 +23,6 @@ export default function Layout({ children }) {
       if (user) {
         try {
           const idTokenResult = await user.getIdTokenResult(true);
-          console.log(idTokenResult?.claims?.puesto);
           setCurrentUser({ ...user, puesto: idTokenResult?.claims?.puesto });
         } catch {
           setCurrentUser(null);
@@ -68,9 +66,14 @@ export default function Layout({ children }) {
                 </Link>
                 <NavDropdown.Divider />
                 {currentUser.puesto === "Administrador" && (
-                  <Link href="/administrar-usuarios" passHref>
-                    <NavDropdown.Item>Administrar Usuarios</NavDropdown.Item>
-                  </Link>
+                  <>
+                    <Link href="/menu-edit" passHref>
+                      <NavDropdown.Item>Editar Menú</NavDropdown.Item>
+                    </Link>
+                    <Link href="/administrar-usuarios" passHref>
+                      <NavDropdown.Item>Administrar Usuarios</NavDropdown.Item>
+                    </Link>
+                  </>
                 )}
                 {(currentUser.puesto === "Administrador" ||
                   currentUser.puesto === "Repartidor") && (
