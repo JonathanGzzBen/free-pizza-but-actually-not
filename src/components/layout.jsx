@@ -64,6 +64,9 @@ export default function Layout({ children }) {
                 <Link href="/profile" passHref>
                   <NavDropdown.Item>Mi Perfil</NavDropdown.Item>
                 </Link>
+                <Link href="/my-orders" passHref>
+                  <NavDropdown.Item>Mis Pedidos</NavDropdown.Item>
+                </Link>
                 <NavDropdown.Divider />
                 {currentUser.puesto === "Administrador" && (
                   <>

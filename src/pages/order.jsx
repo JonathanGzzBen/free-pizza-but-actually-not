@@ -112,7 +112,11 @@ export default function Order(props) {
   const openPayOrderPage = (e) => {
     e.preventDefault();
     if (isPedidoValid(pedido)) {
-      updatePedido(pedido);
+      updatePedido({
+        ...pedido,
+        estado: "Confirmado",
+        clienteId: props.user?.uid,
+      });
       router.push({
         pathname: "/pay-order",
         query: { folio: pedido.folio },
