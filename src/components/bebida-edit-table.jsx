@@ -185,7 +185,7 @@ export default function BebidaEditTable(props) {
       bebidas.forEach((bebida) => {
         actualizarBebida(bebida);
       });
-      alert("Entonces chinga tu madre");
+      alert("Bebidas guardadas");
     }
   };
 

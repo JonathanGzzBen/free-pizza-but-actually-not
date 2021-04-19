@@ -190,7 +190,7 @@ export default function EspecialidadesEditTable(props) {
       especialidades.forEach((especialidad) => {
         actualizarEspecialidad(especialidad);
       });
-      alert("Entonces chinga tu madre");
+      alert("Especialidades guardadas");
     }
   };
 

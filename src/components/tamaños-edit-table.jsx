@@ -242,7 +242,7 @@ export default function TamañosEditTable() {
       tamaños.forEach((tamaño) => {
         actualizarTamaño(tamaño);
       });
-      alert("Tamaños actualizados");
+      alert("Tamaños guardados");
     }
   };
 
