@@ -88,4 +88,10 @@ const updatePedido = async (pedido) =>
       ...getPrecios(pedido),
     });
 
-export { getPedidos, getFolioPedidoBorrador, getPedidoById, updatePedido };
+export {
+  getPedidos,
+  getDetalle,
+  getFolioPedidoBorrador,
+  getPedidoById,
+  updatePedido,
+};
