@@ -1,18 +1,9 @@
-import { useState, useEffect } from "react";
 import { Row, Col, Form, Button, Image } from "react-bootstrap";
 import Layout from "../components/layout";
-import { auth } from "../services/firebase";
 import { useRouter } from "next/router";
-import { redirectIfUserNotSignedIn } from "../services/authorization";
+import { allowIfSignedIn } from "../services/authorization";
 
-export default function Profile(props) {
-  const [currentUser, setCurrentUser] = useState(null);
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
-    });
-  });
-
+export default function Profile({ user }) {
   const router = useRouter();
   const handleActualizarPerfilClick = (e) => {
     e.preventDefault();
@@ -27,8 +18,8 @@ export default function Profile(props) {
             <Image
               fluid
               src={
-                currentUser?.photoURL
-                  ? currentUser.photoURL
+                user?.photoURL
+                  ? user.photoURL
                   : "https://via.placeholder.com/150"
               }
             />
@@ -40,7 +31,7 @@ export default function Profile(props) {
                 type="text"
                 name="nombre"
                 readOnly
-                value={currentUser?.displayName}
+                value={user?.displayName}
               />
             </Form.Group>
             <Form.Group controlId="folio">
@@ -49,7 +40,7 @@ export default function Profile(props) {
                 type="email"
                 name="email"
                 readOnly
-                value={currentUser?.email}
+                value={user?.email}
               />
             </Form.Group>
           </Col>
@@ -69,10 +60,5 @@ export default function Profile(props) {
   );
 }
 
-export async function getServerSideProps({ req, res }) {
-  const redirectResult = await redirectIfUserNotSignedIn(req, res);
-  if (redirectResult) {
-    return redirectResult;
-  }
-  return { props: {} };
-}
+const allowIfSignedInFunction = allowIfSignedIn();
+export { allowIfSignedInFunction as getServerSideProps };
