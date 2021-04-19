@@ -56,6 +56,14 @@ export default function Order(props) {
     });
   };
 
+  const handleTamañoInputChange = (tamañoId) => {
+    const tamaño = props.tamaños.filter((tamaño) => tamaño.id === tamañoId)[0];
+    setPedido({
+      ...pedido,
+      tamaño: tamaño,
+    });
+  };
+
   const isPedidoValid = ({
     folio,
     cliente,
@@ -167,7 +175,9 @@ export default function Order(props) {
                           type="radio"
                           name="tamaño"
                           value={tamaño.id}
-                          onChange={handlePedidoInputChange}
+                          onChange={(e) =>
+                            handleTamañoInputChange(e.target.value)
+                          }
                         />
                         <Form.Check.Label>
                           <div>

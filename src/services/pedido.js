@@ -41,7 +41,7 @@ const getDetalle = async (pedido) => {
   if (!pedido.tamaño) {
     return "";
   }
-  const tamañoDoc = await db.collection("tamaños").doc(pedido.tamaño).get();
+  const tamañoDoc = await db.collection("tamaños").doc(pedido.tamaño.id).get();
   if (!tamañoDoc.data()) {
     return "";
   }
