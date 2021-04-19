@@ -28,7 +28,7 @@ const AgregarTamañoModal = (props) => {
   };
 
   const handleNuevoTamañoPrecioChange = (e) => {
-    setNuevoTamañoPrecio(Number(e.target.value.toString().replace("$", "")));
+    setNuevoTamañoPrecio(e.target.value.toString().replace("$", ""));
   };
 
   const handleNuevoTamañoCantidadIngredientesMaximaChange = (e) => {
