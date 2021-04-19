@@ -22,16 +22,18 @@ export default function PayOrder() {
     }
   };
 
+  const router = useRouter();
+
   const handleAceptarClick = async (e) => {
     e.preventDefault();
     setPedido({ ...pedido, estado: "Confirmado" });
 
     updatePedido(pedido).then(() => {
       alert("Su pedido llegara pronto.");
+      router.push("/");
     });
   };
 
-  const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {
       const pedido = await getPedidoById(router.query.folio);

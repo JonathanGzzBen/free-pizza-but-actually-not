@@ -77,6 +77,7 @@ const updatePedido = async (pedido) =>
     .doc(pedido.folio)
     .set({
       cliente: pedido.cliente,
+      clienteId: pedido.clienteId,
       telefono: pedido.telefono,
       direccion: pedido.direccion,
       tamaño: pedido.tamaño,
