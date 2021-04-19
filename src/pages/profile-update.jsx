@@ -1,21 +1,19 @@
 import { useState, useEffect } from "react";
 import { Row, Col, Form, Button, Image } from "react-bootstrap";
 import Layout from "../components/layout";
-import { auth } from "../services/firebase";
 import { getCurrentUser } from "../services/users";
 import { useRouter } from "next/router";
+import { allowIfSignedIn } from "../services/authorization";
 
-export default function Profile() {
+export default function ProfileUpdate({ user }) {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [photoURL, setPhotoURL] = useState("");
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      setNombre(user.displayName);
-      setEmail(user.email);
-      setPhotoURL(user.photoURL || "");
-    });
+    setNombre(user.displayName);
+    setEmail(user.email);
+    setPhotoURL(user.photoURL || "");
   }, []);
 
   const router = useRouter();
@@ -95,10 +93,5 @@ export default function Profile() {
   );
 }
 
-export async function getServerSideProps({ req, res }) {
-  const redirectResult = await redirectIfUserNotSignedIn(req, res);
-  if (redirectResult) {
-    return redirectResult;
-  }
-  return { props: {} };
-}
+const allowIfSignedInFunction = allowIfSignedIn();
+export { allowIfSignedInFunction as getServerSideProps };
