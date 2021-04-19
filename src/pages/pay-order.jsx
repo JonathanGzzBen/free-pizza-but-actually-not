@@ -1,11 +1,16 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { Row, Col, Form, Button, CardColumns } from "react-bootstrap";
+import { Row, Col, Form, Button } from "react-bootstrap";
 import Layout from "../components/layout";
-import { getPedidoById, updatePedido, getDetalle } from "../services/pedido";
+import { getPedidoById, updatePedido } from "../services/pedido";
 
 export default function PayOrder() {
   const [pedido, setPedido] = useState(null);
+
+  const cancelarPedido = () => {
+    alert("Su pedido ha sido cancelado.");
+    window.location.href = "/order";
+  };
 
   const handleCancelClick = (e) => {
     e.preventDefault();
@@ -13,24 +18,27 @@ export default function PayOrder() {
       "Esta seguro de que desea cancelar su compra?"
     );
     if (positiveConfirmation) {
-      console.log("Si quiere cancelar");
+      cancelarPedido();
     }
   };
 
-  const handleAceptarClick = (e) => {
+  const handleAceptarClick = async (e) => {
     e.preventDefault();
     setPedido({ ...pedido, estado: "Confirmado" });
-    updatePedido(pedido);
-    alert("Su pedido llegara pronto.");
+
+    updatePedido(pedido).then(() => {
+      alert("Su pedido llegara pronto.");
+    });
   };
 
   const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {
       const pedido = await getPedidoById(router.query.folio);
-      const detalle = await getDetalle(pedido);
-      console.log("Pedido fetched", pedido);
-      setPedido({ ...pedido, detalle: detalle });
+      if (!(pedido && pedido.detalle)) {
+        cancelarPedido();
+      }
+      setPedido(pedido);
     };
     fetchData();
   }, []);
@@ -95,7 +103,7 @@ export default function PayOrder() {
                 <Form.Control
                   type="text"
                   readOnly
-                  value={pedido.formaPago.nombre}
+                  value={pedido.formaPago?.nombre}
                 />
               </Form.Group>
               <Form.Group controlId="sub-total">
