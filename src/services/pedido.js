@@ -1,5 +1,40 @@
 import { db } from "../services/firebase";
 
+const isPedidoValid = ({
+  folio,
+  cliente,
+  telefono,
+  direccion,
+  tamaño,
+  especialidades,
+  bebidas,
+  formaPago,
+}) => {
+  if (
+    bebidas?.filter((bebida) => bebida.cantidad < 0 || bebida.precio <= 0)
+      .length > 0
+  ) {
+    return false;
+  } else if (tamaño.precio <= 0) {
+    return false;
+  }
+  if (
+    !(
+      folio &&
+      cliente &&
+      telefono &&
+      direccion &&
+      tamaño &&
+      especialidades &&
+      bebidas &&
+      formaPago
+    )
+  ) {
+    return false;
+  }
+  return true;
+};
+
 const getPrecios = (pedido) => {
   let subTotalBebidas = 0;
   pedido.bebidas?.forEach((bebida) => {
@@ -71,8 +106,8 @@ const getPedidoById = async (id) => {
   };
 };
 
-const updatePedido = async (pedido) =>
-  db
+const updatePedido = async (pedido) => {
+  await db
     .collection("pedidos")
     .doc(pedido.folio)
     .set({
@@ -88,8 +123,10 @@ const updatePedido = async (pedido) =>
       detalle: await getDetalle(pedido),
       ...getPrecios(pedido),
     });
+};
 
 export {
+  isPedidoValid,
   getPedidos,
   getDetalle,
   getFolioPedidoBorrador,
