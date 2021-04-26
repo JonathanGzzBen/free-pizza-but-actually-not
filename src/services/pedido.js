@@ -15,7 +15,7 @@ const isPedidoValid = ({
       .length > 0
   ) {
     return false;
-  } else if (tamaño.precio <= 0) {
+  } else if (tamaño?.precio <= 0) {
     return false;
   }
   if (
