@@ -17,8 +17,12 @@ const isPedidoValid = ({
     return false;
   } else if (tamaño?.precio <= 0) {
     return false;
-  }
-  if (
+  } else if (
+    especialidades.filter((especialidad) => especialidad.incluir).length >
+    tamaño.cantidadIngredientesMaxima
+  ) {
+    return false;
+  } else if (
     !(
       folio &&
       cliente &&
