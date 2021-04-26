@@ -151,3 +151,6 @@ export default function PayOrder() {
     return <div>Loading...</div>;
   }
 }
+
+const allowIfSignedInFunction = allowIfSignedIn();
+export { allowIfSignedInFunction as getServerSideProps };
