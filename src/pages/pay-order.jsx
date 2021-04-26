@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import Layout from "../components/layout";
 import { getPedidoById, updatePedido } from "../services/pedido";
+import { allowIfSignedIn } from "../services/authorization";
 
 export default function PayOrder() {
   const [pedido, setPedido] = useState(null);
