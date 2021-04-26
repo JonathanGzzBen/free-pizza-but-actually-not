@@ -273,6 +273,7 @@ export default function PedidosPorDia(props) {
               <th>CLIENTE</th>
               <th>TELEFONO</th>
               <th>ESTADO</th>
+              <th>FECHA</th>
               <th></th>
             </tr>
           </thead>
@@ -290,6 +291,11 @@ export default function PedidosPorDia(props) {
                   <td>{pedido.cliente}</td>
                   <td>{pedido.telefono}</td>
                   <td>{pedido.estado}</td>
+                  <td>
+                    {pedido.fecha
+                      ? new Date(pedido.fecha).toLocaleDateString()
+                      : "Sin Fecha"}
+                  </td>
                   <td>
                     <button onClick={(e) => handlePedidoSelect(e, pedido)}>
                       Seleccionar

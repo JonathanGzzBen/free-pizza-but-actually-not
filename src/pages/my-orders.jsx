@@ -10,7 +10,7 @@ export default function MyOrders(props) {
     date.toISOString().substring(0, 10)
   );
   const [folio, setFolio] = useState("");
-  const [estado, setEstado] = useState("Confirmado");
+  const [estado, setEstado] = useState("Todo");
   const [isLoading, setIsLoading] = useState(true);
   const [detalle, setDetalle] = useState("");
   const [direccion, setDireccion] = useState("");
@@ -187,6 +187,7 @@ export default function MyOrders(props) {
               <th>TELEFONO</th>
               <th>ESTADO</th>
               <th>MONTO</th>
+              <th>FECHA</th>
               <th></th>
             </tr>
           </thead>
@@ -204,6 +205,11 @@ export default function MyOrders(props) {
                   <td>{pedido.telefono}</td>
                   <td>{pedido.estado}</td>
                   <td>{pedido.total}</td>
+                  <td>
+                    {pedido.fecha
+                      ? new Date(pedido.fecha)?.toLocaleDateString()
+                      : "Sin Fecha"}
+                  </td>
                   <td>
                     <button onClick={(e) => handlePedidoSelect(e, pedido)}>
                       Seleccionar
