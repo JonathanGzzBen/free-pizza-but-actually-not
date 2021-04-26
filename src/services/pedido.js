@@ -126,6 +126,7 @@ const updatePedido = async (pedido) => {
       estado: pedido.estado,
       detalle: await getDetalle(pedido),
       ...getPrecios(pedido),
+      fecha: new Date().getTime(),
     });
 };
 
