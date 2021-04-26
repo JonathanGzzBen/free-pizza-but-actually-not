@@ -47,6 +47,24 @@ const allowIfSignedIn = () => {
   return getServerSidePropsFunction;
 };
 
+const allowIfNotSignedIn = () => {
+  const getServerSidePropsFunction = async ({ req, res }) => {
+    const user = await validateOnServerSide(req, res);
+    if (user) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
+    return {
+      props: {},
+    };
+  };
+  return getServerSidePropsFunction;
+};
+
 const allowOnlyIfOnRole = (roles) => {
   const getServerSidePropsFunction = async ({ req, res }) => {
     const user = await validateOnServerSide(req, res);
@@ -68,6 +86,7 @@ const allowOnlyIfOnRole = (roles) => {
 export {
   validateOnServerSide,
   allowIfSignedIn,
+  allowIfNotSignedIn,
   allowOnlyIfOnRole,
   redirectIfUserNotSignedIn,
 };

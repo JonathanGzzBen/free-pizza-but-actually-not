@@ -2,18 +2,9 @@ import { useState } from "react";
 import { Row, Col, Form, Button, CardColumns } from "react-bootstrap";
 import Layout from "../components/layout";
 import { signIn, register } from "../services/users";
-import { useRouter } from "next/router";
-import { auth } from "../services/firebase";
+import { allowIfNotSignedIn } from "../services/authorization";
 
 export default function SignIn() {
-  const router = useRouter();
-
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      router.push("/");
-    }
-  });
-
   const [email, setEmail] = useState("");
   const [contraseña, setContraseña] = useState("");
 
@@ -78,3 +69,6 @@ export default function SignIn() {
     </Layout>
   );
 }
+
+const allowIfSignedInFunction = allowIfNotSignedIn();
+export { allowIfSignedInFunction as getServerSideProps };
