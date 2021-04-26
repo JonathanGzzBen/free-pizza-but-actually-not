@@ -7,7 +7,11 @@ import { getBebidas } from "../services/bebidas";
 import { getTamaños } from "../services/tamaños";
 import { getEspecialidades } from "../services/especialidades";
 import { getFormasPago } from "../services/formasPago";
-import { getFolioPedidoBorrador, updatePedido } from "../services/pedido";
+import {
+  getFolioPedidoBorrador,
+  updatePedido,
+  isPedidoValid,
+} from "../services/pedido";
 import { allowIfSignedIn } from "../services/authorization";
 
 export default function Order(props) {
@@ -37,7 +41,7 @@ export default function Order(props) {
       cliente: props.user?.displayName || props.user?.email || "",
       telefono: props.user?.phoneNumber || "",
       direccion: "",
-      tamaño: {},
+      tamaño: null,
       estado: "Borrador",
     });
   }, []);
@@ -81,46 +85,20 @@ export default function Order(props) {
     });
   };
 
-  const isPedidoValid = ({
-    folio,
-    cliente,
-    telefono,
-    direccion,
-    tamaño,
-    especialidades,
-    bebidas,
-    formaPago,
-  }) => {
-    if (
-      !(
-        folio &&
-        cliente &&
-        telefono &&
-        direccion &&
-        tamaño &&
-        especialidades &&
-        bebidas &&
-        formaPago
-      )
-    ) {
-      return false;
-    }
-    return true;
-  };
-
   const router = useRouter();
-  const openPayOrderPage = (e) => {
+  const openPayOrderPage = async (e) => {
     e.preventDefault();
     if (isPedidoValid(pedido)) {
-      updatePedido({
+      await updatePedido({
         ...pedido,
-        estado: "Confirmado",
         clienteId: props.user?.uid,
       });
       router.push({
         pathname: "/pay-order",
         query: { folio: pedido.folio },
       });
+    } else {
+      alert("Pedido invalido, revise que llene todos los campos.");
     }
   };
 

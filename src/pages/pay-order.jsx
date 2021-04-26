@@ -24,11 +24,11 @@ export default function PayOrder() {
 
   const router = useRouter();
 
-  const handleAceptarClick = async (e) => {
+  const handleAceptarClick = (e) => {
     e.preventDefault();
-    setPedido({ ...pedido, estado: "Confirmado" });
-
-    updatePedido(pedido).then(() => {
+    const pedidoConfirmado = { ...pedido, estado: "Confirmado" };
+    setPedido(pedidoConfirmado);
+    updatePedido(pedidoConfirmado).then(() => {
       alert("Su pedido llegara pronto.");
       router.push("/");
     });

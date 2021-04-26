@@ -10,7 +10,7 @@ export default function MyOrders(props) {
     date.toISOString().substring(0, 10)
   );
   const [folio, setFolio] = useState("");
-  const [estado, setEstado] = useState("Todo");
+  const [estado, setEstado] = useState("Confirmado");
   const [isLoading, setIsLoading] = useState(true);
   const [detalle, setDetalle] = useState("");
   const [direccion, setDireccion] = useState("");
@@ -21,11 +21,13 @@ export default function MyOrders(props) {
 
   const fetchPedidos = async () => {
     setPedidos(
-      (await getPedidos()).filter(
-        (pedido) =>
-          pedido.clienteId === props.user.uid &&
-          (estado === "Todo" ? true : pedido.estado === estado)
-      )
+      (await getPedidos())
+        .filter(
+          (pedido) =>
+            pedido.clienteId === props.user.uid &&
+            (estado === "Todo" ? true : pedido.estado === estado)
+        )
+        .filter((pedido) => pedido.estado !== "Borrador")
     );
   };
 
@@ -144,7 +146,7 @@ export default function MyOrders(props) {
               <Form.Control
                 type="text"
                 value={telefono}
-                readOnly={isPedidoSeleccionado}
+                readOnly
                 onChange={(e) => setTelefono(e.target.value)}
               />
             </Form.Group>
