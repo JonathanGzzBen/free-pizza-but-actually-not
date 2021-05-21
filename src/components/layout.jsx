@@ -97,10 +97,29 @@ export default function Layout({ children }) {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <Container fluid>
-        <Row className="justify-content-center pt-4">
-          <Col className="justify-content-center" sm={8}>
-            {children}
+      <Container
+        fluid
+        style={{
+          backgroundImage: `url(/FreePizzaBackground.jpeg)`,
+          height: "100vh",
+        }}
+      >
+        <Row className="justify-content-center pt-4 ml-1 mr-1">
+          <Col
+            className="justify-content-center p-sm-5 p-md-1 pt-5"
+            style={{
+              backgroundColor: "white",
+              minHeight: "80vh",
+              borderRadius: "10px",
+              borderColor: "black",
+              borderStyle: "solid",
+            }}
+            sm={8}
+          >
+            <Container fluid className="mt-5 pl-5 pr-5">
+              {" "}
+              {children}
+            </Container>
           </Col>
         </Row>
       </Container>
