@@ -267,7 +267,7 @@ export default function TamañosEditTable() {
       />
       <Row>
         <h2>Tamaños</h2>
-        <Table striped bordered hover>
+        <Table striped bordered hover responsive>
           <thead>
             <tr>
               <th>Id</th>

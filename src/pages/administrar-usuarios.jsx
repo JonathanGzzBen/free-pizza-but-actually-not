@@ -190,7 +190,7 @@ export default function PedidosPorDia() {
         </Row>
       </Form>
       <Row>
-        <Table striped bordered hover>
+        <Table striped bordered hover responsive>
           <thead>
             <tr>
               <th>Id</th>

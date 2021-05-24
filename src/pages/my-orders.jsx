@@ -180,7 +180,7 @@ export default function MyOrders(props) {
         </Row>
       </Form>
       <Row>
-        <Table striped bordered hover>
+        <Table striped bordered hover responsive>
           <thead>
             <tr>
               <th>FOLIO</th>

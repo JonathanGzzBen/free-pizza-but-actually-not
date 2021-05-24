@@ -210,7 +210,7 @@ export default function BebidaEditTable(props) {
       />
       <Row>
         <h2>Bebidas</h2>
-        <Table striped bordered hover>
+        <Table striped bordered hover responsive>
           <thead>
             <tr>
               <th>Id</th>
