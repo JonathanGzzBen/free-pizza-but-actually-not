@@ -3,15 +3,20 @@ import { Row, Col, Form, Button, CardColumns } from "react-bootstrap";
 import Layout from "../components/layout";
 import { signIn, register } from "../services/users";
 import { allowIfNotSignedIn } from "../services/authorization";
+import { useRouter } from "next/router";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [contraseña, setContraseña] = useState("");
+  const router = useRouter();
 
   const handleLoginSubmitClick = async (e) => {
     e.preventDefault();
     try {
-      await signIn(email, contraseña);
+      const user = await signIn(email, contraseña);
+      if (user) {
+        router.push("/");
+      }
     } catch (e) {
       if (e.code === "auth/invalid-email") {
         alert("Email no válido");
@@ -30,7 +35,7 @@ export default function SignIn() {
 
   return (
     <Layout>
-      <Form>
+      <Form onSubmit={handleLoginSubmitClick}>
         <Row className="justify-content-center">
           <Col md={5}>
             <Form.Group controlId="usuario">
@@ -54,10 +59,19 @@ export default function SignIn() {
             <Row className="justify-content-center">
               <Form.Group>
                 <Col sm={{ span: 10 }}>
-                  <Button type="submit" onClick={handleLoginSubmitClick}>
+                  <Button
+                    type="submit"
+                    variant="success"
+                    className="mb-3 ml-auto mr-auto"
+                    onClick={handleLoginSubmitClick}
+                  >
                     Iniciar Sesion
                   </Button>
-                  <Button type="submit" onClick={handleRegisterSubmitClick}>
+                  <Button
+                    onClick={handleRegisterSubmitClick}
+                    className="mb-3 ml-auto mr-auto"
+                    onClick={handleLoginSubmitClick}
+                  >
                     Registrar
                   </Button>
                 </Col>
