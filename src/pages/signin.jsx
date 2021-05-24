@@ -70,7 +70,6 @@ export default function SignIn() {
                   <Button
                     onClick={handleRegisterSubmitClick}
                     className="mb-3 ml-auto mr-auto"
-                    onClick={handleLoginSubmitClick}
                   >
                     Registrar
                   </Button>
