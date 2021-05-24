@@ -28,8 +28,8 @@ export default function SignIn() {
 
   const handleRegisterSubmitClick = (e) => {
     e.preventDefault();
-    register(email, contraseña).then((usuario) => {
-      alert(usuario.getIdToken());
+    register(email, contraseña).then(() => {
+      router.push("/");
     });
   };
 
