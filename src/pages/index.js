@@ -7,8 +7,8 @@ export default function Home() {
       <Container fluid className="justify-content-center">
         <Row>
           <Col className="ml-auto mr-auto" md="8" xs="auto">
-            <Carousel className="ml-auto mr-auto">
-              <Carousel.Item interval={1000}>
+            <Carousel className="ml-auto mr-auto pb-5">
+              <Carousel.Item interval={2000}>
                 <Image
                   fluid
                   className="d-block w-100"
@@ -26,7 +26,7 @@ export default function Home() {
                   <p>Ni que fueras pizza</p>
                 </Carousel.Caption>
               </Carousel.Item>
-              <Carousel.Item interval={1000}>
+              <Carousel.Item interval={2000}>
                 <Image
                   fluid
                   className="d-block w-100"
@@ -44,7 +44,7 @@ export default function Home() {
                   <p>Ni que fueras pizza</p>
                 </Carousel.Caption>
               </Carousel.Item>
-              <Carousel.Item interval={1000}>
+              <Carousel.Item interval={2000}>
                 <Image
                   fluid
                   className="d-block w-100"
@@ -62,7 +62,7 @@ export default function Home() {
                   <p>Ni que fueras pizza</p>
                 </Carousel.Caption>
               </Carousel.Item>
-              <Carousel.Item interval={1000}>
+              <Carousel.Item interval={2000}>
                 <Image
                   fluid
                   className="d-block w-100"
@@ -81,6 +81,34 @@ export default function Home() {
                 </Carousel.Caption>
               </Carousel.Item>
             </Carousel>
+          </Col>
+        </Row>
+        <Row>
+          <Col className="ml-auto mr-auto pb-4" md="8" xs="auto">
+            <Image src="/free-pizza-logo.jpeg" fluid className="pl-2 pb-4" />
+            <p>
+              Ofrecemos pizzas y alimentos de excelente calidad y nos honra que
+              la pruebe.
+            </p>
+            <p>
+              La clave para convertirnos en la mejor pizzería de Santiago fue
+              simple: "Elaborar pizzas tradicionales y de gran calidad que
+              quedan bien en toda ocasión".
+            </p>
+            <p>
+              Estamos orgullosos de servir pizzas auténticas y artesanaales a
+              nuestros clientes hasta las puertas de su casa u hotel.
+            </p>
+            <p>
+              Disfrute de nuestra deliciosa Pizza, para nosotros es un placer
+              servirle, De antemano le agradecemos desde el fondo de nuestro
+              corazón su apoyo continuo.
+            </p>
+            <h2>Dirección</h2>
+            <p>
+              Carretera Nacional Km-220 Esquina con Porfifrio Díaz C.P. 67300,
+              El Cercado, Santiago, N.L.
+            </p>
           </Col>
         </Row>
       </Container>
