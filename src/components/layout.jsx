@@ -101,7 +101,7 @@ export default function Layout({ children }) {
         fluid
         style={{
           backgroundImage: `url(/FreePizzaBackground.jpeg)`,
-          height: "100vh",
+          minHeight: "100vh",
         }}
       >
         <Row className="justify-content-center pt-4 ml-1 mr-1">
