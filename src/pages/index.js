@@ -13,6 +13,7 @@ export default function Home() {
                   fluid
                   className="d-block w-100"
                   src="https://images.pexels.com/photos/3915857/pexels-photo-3915857.jpeg"
+                  style={{ maxHeight: "400px" }}
                 />
                 <Carousel.Caption className="d-md-none">
                   <h3>¿Esperarte?</h3>
@@ -31,6 +32,7 @@ export default function Home() {
                   fluid
                   className="d-block w-100"
                   src="https://images.pexels.com/photos/708587/pexels-photo-708587.jpeg"
+                  style={{ maxHeight: "400px" }}
                 />
                 <Carousel.Caption className="d-md-none">
                   <h3>Mas pizza</h3>
@@ -49,6 +51,7 @@ export default function Home() {
                   fluid
                   className="d-block w-100"
                   src="https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg"
+                  style={{ maxHeight: "400px" }}
                 />
                 <Carousel.Caption className="d-md-none">
                   <h3>Si sientes un vacío</h3>
@@ -67,6 +70,7 @@ export default function Home() {
                   fluid
                   className="d-block w-100"
                   src="https://images.pexels.com/photos/1049626/pexels-photo-1049626.jpeg"
+                  style={{ maxHeight: "400px" }}
                 />
                 <Carousel.Caption className="d-md-none">
                   <h3>Todo lo que necesitas</h3>
